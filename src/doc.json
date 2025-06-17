@@ -1,0 +1,47 @@
+{
+  "author_key": [
+      "OL33442A",
+      "OL113380A",
+      "OL14621538A",
+      "OL1813531A"
+  ],
+  "author_name": [
+      "Miguel de Unamuno",
+      "J. E. Crawford Flitch",
+      "Miguel de Unamuno",
+      "Kenneth L. Patton"
+  ],
+  "cover_edition_key": "OL7101288M",
+  "cover_i": 5620455,
+  "ebook_access": "public",
+  "edition_count": 126,
+  "first_publish_year": 1900,
+  "has_fulltext": true,
+  "ia": [
+      "delsentimientotr00unam_0",
+      "delsentimientot00unam",
+      "thetragicsenseof00unamuoft",
+      "delsentimientotr1966unam",
+      "tragicsenseoflif00unam",
+      "tragicsenseoflif0000unam",
+      "tragicsenseoflif0000unam_e9u3",
+      "delsentimientotr0000unam_g7l0",
+      "delsentimientotr0000unam",
+      "delsentimientotr00unam",
+      "delsentimientotr00migu",
+      "bwb_O6-CQO-919",
+      "tragicsenseoflif0000migu_i2p5",
+      "selectedworks0003unam"
+  ],
+  "ia_collection_s": "Princeton;ambslibrary-ol;americana;americanuniversity-ol;binghamton-ol;claremont_school_of_theology;cua-ol;drakeuniversity-ol;gwulibraries-ol;inlibrary;internetarchivebooks;ithacacollege-ol;kalamazoocollege-ol;majorityworldcollection;marymount-ol;miltonpubliclibrary-ol;openlibrary-d-ol;printdisabled;randolph-macon-college-ol;robarts;saiacs-ol;the-claremont-colleges-ol;toronto;trent_university;udc-ol;unb-ol;uni-ol;university_of_toronto;universityofoklahoma-ol;universityofthewest-ol;wilsoncollege-ol",
+  "key": "/works/OL503529W",
+  "language": [
+      "spa",
+      "fre",
+      "eng"
+  ],
+  "lending_edition_s": "OL33152773M",
+  "lending_identifier_s": "delsentimientotr00unam_0",
+  "public_scan_b": true,
+  "title": "Del sentimiento tr\u00e1gico de la vida en los hombres y en los pueblos"
+}
