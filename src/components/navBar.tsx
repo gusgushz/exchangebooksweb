@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router';
 
+
 export function MyAppNav() {
   return (
     <nav>
@@ -13,6 +14,6 @@ export function MyAppNav() {
       <NavLink to="/account">Account</NavLink> */}
     </nav>
 
-    
+
   );
 }
