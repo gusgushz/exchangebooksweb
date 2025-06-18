@@ -39,7 +39,7 @@ createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
       <Routes>
         {/* 🌐 Rutas públicas */}
-        <Route path="/inicio" element={<App />} />
+        <Route index element={<App />} />
         <Route path="/buscar" element={<SearchScreen />} />
         <Route path={`/:${otherUser.name}+${otherUser.lastname}+${otherUser.id}/libros`} element={<UserBooksScreen />} />
 
