@@ -5,5 +5,5 @@ export * from './LoginScreen';
 export * from './PublishBooksScreen';
 export * from './SearchScreen';
 export * from './BookExchangeScreen';
-export * from './RatingScreen';
+export * from '../components/Rating';
 export * from './UserBooksScreen';

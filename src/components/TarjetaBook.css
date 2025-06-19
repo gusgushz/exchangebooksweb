@@ -1,0 +1,60 @@
+.tarjeta-book {
+  background: #FFFCF5;
+  border-radius: 28px;
+  border: 1.5px solid #DBD0BA;
+  padding: 15px 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.tarjeta-book-titulo {
+  color: #4A3F35;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 18px;
+  text-align: center;
+}
+
+.tarjeta-book-imagen {
+  width: 130px;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 28px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+.tarjeta-book-btn {
+  background: #A67C52;
+  color: #fff;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 12px;
+  padding: 5px 20px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  font-family: 'Montserrat', Arial, sans-serif;
+  transition: background 0.2s;
+}
+
+.tarjeta-book-btn:hover {
+  background: #c8bc9e;
+}
+
+.tarjeta-book-link {
+  background: none;
+  color: #5C4D3F;
+  font-size: 1.1rem;
+  font-family: 'Montserrat', Arial, sans-serif;
+  cursor: pointer;
+  text-decoration: underline transparent;
+  transition: text-decoration 0.2s;
+  border: none;
+}
+
+.tarjeta-book-link:hover {
+  text-decoration: underline #a67c52;
+}

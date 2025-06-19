@@ -1,0 +1,104 @@
+.user-books-bg {
+  min-height: 100vh;
+  background: #f5f1e6;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-books-top {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 40px;
+  width: 70%;
+  justify-content: space-between;
+}
+
+.user-books-card {
+  background: #fffaf2;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  border: 1.5px solid #DBD0BA;
+  padding: 24px 32px;
+  min-width: 260px;
+  text-align: center;
+}
+
+.user-books-card h2 {
+  color: #4A3F35;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+  margin-bottom: 16px;
+}
+
+.user-books-card img {
+  width: 120px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.user-books-select-btn {
+  background: #a67c52;
+  color: #fff;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 24px;
+  margin-left: 32px;
+  margin-top: 40px;
+  cursor: pointer;
+  font-family: 'Montserrat', Arial, sans-serif;
+  transition: background 0.2s;
+}
+
+.user-books-select-btn:hover {
+  background: #8b5c2a;
+}
+
+.user-books-form {
+  background: #fffaf2;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  border: 1.5px solid #DBD0BA;
+  padding: 32px;
+  width: 70%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.user-books-form h3 {
+  color: #4A3F35;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.user-books-form input {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #DBD0BA;
+  font-size: 1rem;
+  font-family: 'Montserrat', Arial, sans-serif;
+}
+
+.user-books-form button[type="submit"] {
+  background: #a67c52;
+  color: #fff;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 0;
+  margin-top: 10px;
+  cursor: pointer;
+  font-family: 'Montserrat', Arial, sans-serif;
+  transition: background 0.2s;
+}
+
+.user-books-form button[type="submit"]:hover {
+  background: #8b5c2a;
+}
