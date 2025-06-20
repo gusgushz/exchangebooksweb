@@ -1,5 +1,6 @@
 /* Fondo general */
-body, .App {
+body,
+.App {
   background: #f8f3e5;
   margin: 0;
   padding: 0;
@@ -18,6 +19,9 @@ body, .App {
   box-sizing: border-box;
   margin-bottom: 0;
   border: none;
+  position: sticky;
+  top: 0;
+  z-index: 999;
 }
 
 .header-content {
@@ -82,6 +86,12 @@ body, .App {
   display: flex;
   align-items: center;
   gap: 18px;
+  padding: 12px 20px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .nav-links a {
@@ -141,7 +151,7 @@ body, .App {
   align-items: stretch;
   background: #f8e8cc;
   border-radius: 0;
-  margin: 10px  0 0;
+  margin: 10px 0 0;
   padding: 0;
   max-width: 1500px;
   width: 100%;
@@ -176,7 +186,8 @@ body, .App {
   margin-top: 24px;
 }
 
-.btn-login, .btn-register {
+.btn-login,
+.btn-register {
   background: #bfa77a;
   color: #fff;
   border: none;
@@ -189,7 +200,8 @@ body, .App {
   transition: background 0.2s;
 }
 
-.btn-login:hover, .btn-register:hover {
+.btn-login:hover,
+.btn-register:hover {
   background: #a67c52;
 }
 
@@ -302,12 +314,12 @@ body, .App {
 
 /* Oculta la barra de scroll horizontal del carrusel */
 .carousel-track {
-  scrollbar-width: none;      /* Firefox */
-  -ms-overflow-style: none;   /* IE y Edge */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE y Edge */
 }
 
 .carousel-track::-webkit-scrollbar {
-  display: none;              /* Chrome, Safari y Opera */
+  display: none; /* Chrome, Safari y Opera */
 }
 
 .carousel-item {
@@ -315,7 +327,7 @@ body, .App {
   max-width: 180px;
   background: #f8e8cc;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -375,13 +387,13 @@ body, .App {
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   transition: transform 0.2s;
 }
 
 .step:hover {
   transform: translateY(-6px) scale(1.04);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
 .step-icon {
@@ -401,12 +413,12 @@ body, .App {
   background: #f5eddc;
   color: #4b463f;
   padding: 12px 0 8px 0;
-  position: fixed;
+  position: relative;
   left: 0;
   bottom: 0;
   z-index: 100;
   transition: transform 0.4s;
-  box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
   font-size: 0.98rem;
 }
 
@@ -484,4 +496,17 @@ body, .App {
   max-width: 700px;
   margin: 0 auto;
   line-height: 1.6;
+}
+
+@keyframes hide-on-scroll {
+  from {
+    transform: translateY(0%);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+html {
+  scroll-timeline: --scrollTimeline y;
 }
