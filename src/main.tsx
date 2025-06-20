@@ -11,7 +11,6 @@ import {
   LoginScreen,
   RegisterScreen,
   BookExchange,
-  RatingScreen,
   SearchScreen,
   UserBooksScreen,
 } from './screens/';
@@ -87,13 +86,24 @@ createRoot(document.getElementById('root')!).render(
           }
         />
         <Route
+          path="/Perfilusuario"
+          element={
+            <ProtectedRoute user={userLogged}>
+              <UserBooksScreen />
+            </ProtectedRoute>
+          }
+        />
+
+
+        {/*}
+        <Route
           path="/calificar"
           element={
             <ProtectedRoute user={userLogged}>
               <RatingScreen />
             </ProtectedRoute>
           }
-        />
+        />*/}
 
         {/* ❌ Ruta para errores */}
         <Route path="*" element={<ErrorScreen />} />

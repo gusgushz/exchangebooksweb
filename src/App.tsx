@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect,useState } from "react";
 import "./App.css";
 import logo from "./assets/logo.jpg";
 import portada from "./assets/portada.jpg";
@@ -10,8 +10,15 @@ import Cien from "./assets/Cien.jpg";
 import Quijote from "./assets/Quijote.jpg";
 import Perfil from "./assets/Perfil.png";
 import { ProfileScreen } from "./screens";
- 
+import Rating from './components/Rating'; // Importa el modal
+import TarjetaBook from "./components/TarjetaBook"; // Importa la tarjeta de libro
+import { useNavigate } from 'react-router';
+import { SearchScreen } from './screens';
+
 function App() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+
   useEffect(() => {
     const footer = document.getElementById("footer");
     let timeout: number;
@@ -182,10 +189,32 @@ function App() {
       <a href="#">Preguntas frecuentes</a>
     </div>
   </div>
-</footer>
+  <div>
+      <h1>Bienvenido a Exchange Books</h1>
+      <p>Intercambia y descubre nuevos libros fácilmente.</p>
+
+      <button onClick={() => setIsModalOpen(true)}>Abrir Modal</button>
+
+      {isModalOpen && <Rating onClose={() => setIsModalOpen(false)} />}
+
+      <TarjetaBook
+        titulo="Mi gran libro de cuentos"
+        imagen="https://http2.mlstatic.com/D_NQ_NP_973518-MLC50958432176_082022-O.webp"
+        onIntercambiar={() => alert('Intercambiar')}
+        onVerMas={() => alert('Ver más')}
+      />
+
+      <div>
+        <button onClick={() => navigate('/Perfilusuario')}>
+          Ir a detalle del libro
+        </button>
     </div>
-  );
-}
+
+    </div>
+    <SearchScreen />
+</footer>
+</div>
+  );}
 
 function scrollCarousel(direction: number) {
   const track = document.getElementById("carousel-track");
