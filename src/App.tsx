@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Rating from './components/Rating'; // Importa el modal
 import TarjetaBook from "./components/TarjetaBook"; // Importa la tarjeta de libro
 import { useNavigate } from 'react-router-dom';
+import { SearchScreen } from './screens';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,6 +32,7 @@ function App() {
     </div>
 
     </div>
+    <SearchScreen />
   );
 }
 
