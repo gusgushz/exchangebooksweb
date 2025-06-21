@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import logo from './assets/logo.jpg';
 import portada from './assets/portada.jpg';
@@ -13,10 +13,21 @@ import TarjetaBook from './components/TarjetaBook'; // Importa la tarjeta de lib
 import { useNavigate } from 'react-router';
 import { SearchScreen } from './screens';
 import { NavBar } from './components/navBar';
+import { GetSearchBooks } from './api/GetSearchBooks';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+  const [book, setBook] = useState<{ title: string; author: string; description: string }>(); // Estado para el libro seleccionado
+  useEffect(() => {
+    const fetchBook = async () => {
+      const bookData = await GetSearchBooks('don');
+      if (bookData) {
+        setBook(bookData[0]);
+      }
+    };
+    fetchBook();
+  }, []);
 
   return (
     <div className="App">
@@ -37,6 +48,14 @@ function App() {
         <section className="hero">
           <div className="hero-text">
             <h1>¡BIENVENIDO A LIBROVA!</h1>
+            {book && (
+              <div className="book-info">
+                <h2>Libro seleccionado:</h2>
+                <p>Título: {book.title}</p>
+                <p>Autor: {book.author}</p>
+                <p>Descripción: {book.description}</p>
+              </div>
+            )}
             <p>"Una biblioteca colaborativa creada por y para estudiantes."</p>
             <p>Explora, conecta, ahorra a lo grande</p>
             <div className="buttons">

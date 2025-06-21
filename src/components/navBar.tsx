@@ -6,20 +6,19 @@ import { useState, useRef, useEffect } from 'react';
 
 export const NavBar = () => {
   const navigate = useNavigate();
+  const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   //PARA PROBAR LA NAVEGACIÓN TANTO AQUI COMO EN LOS COMPONENTES O PAGINAS TIENEN QUE ESTAR IGUAL, ES DECIR, SI VA A SER UN USUARIO LOGGEADO, DEBE ESTAR EL OBJETO userLogged en AMBOS ACTIVO, SI NO HAY USUARIO LOGGEADO DEBE ESTAR EN NULL AMBOS
   //CHECAR MAIN.TS
-  const userLogged = {
-    id: 1,
-    name: 'usuario',
-    lastname: 'demo',
-    email: 'user',
-  }; // o null si no está logueado
+  // const userLogged = {
+  //   id: 1,
+  //   name: 'usuario',
+  //   lastname: 'demo',
+  //   email: 'user',
+  // }; // o null si no está logueado
   // const userLogged = null;
-
-  const [user, setUser] = useState<any | null>(userLogged);
 
   const handleProfileClick = () => {
     if (user) {
@@ -31,6 +30,8 @@ export const NavBar = () => {
 
   const handleLogout = () => {
     console.log('Cerrar sesión');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     setIsModalOpen(false);
   };
 
