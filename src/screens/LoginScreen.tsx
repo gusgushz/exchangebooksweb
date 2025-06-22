@@ -7,12 +7,12 @@ import { PostLogin } from '../api/PostLogin';
 import { useNavigate } from 'react-router';
 
 export const LoginScreen = () => {
-  const navigate = useNavigate();
   const [username, setUsername] = useState(''); // Aquí será email
   const [password, setPassword] = useState('');
   const [mostrarContrasena, setMostrarContrasena] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+  const navigate = useNavigate(); // Hook para navegar
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();

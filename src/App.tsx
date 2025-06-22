@@ -175,19 +175,13 @@ function App() {
             <h4>Redes sociales</h4>
             <div className="footer-social">
               <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" title="Facebook">
-                <span role="img" aria-label="Facebook">
-                  📘
-                </span>
+                <span role="img" aria-label="Facebook">📘</span>
               </a>
               <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" title="Twitter">
-                <span role="img" aria-label="Twitter">
-                  🐦
-                </span>
+                <span role="img" aria-label="Twitter">🐦</span>
               </a>
               <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" title="Instagram">
-                <span role="img" aria-label="Instagram">
-                  📸
-                </span>
+                <span role="img" aria-label="Instagram">📸</span>
               </a>
             </div>
           </div>
