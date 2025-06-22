@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import type { FormEvent } from 'react';
 import axios from 'axios';
@@ -11,6 +12,7 @@ export const LoginScreen = () => {
   const [mostrarContrasena, setMostrarContrasena] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+  const navigate = useNavigate(); // Hook para navegar
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
