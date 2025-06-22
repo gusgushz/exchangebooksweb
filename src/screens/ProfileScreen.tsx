@@ -18,7 +18,8 @@ type ExchangeHistory = {
 };
 
 export const ProfileScreen = () => {
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null;
+  console.log('user', user);
   const token = localStorage.getItem('token');
   const userId = user.id;
 
@@ -47,28 +48,35 @@ export const ProfileScreen = () => {
   // Obtener datos del usuario
   useEffect(() => {
     async function fetchUser() {
-      const res = await fetch(`/api/users/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` }
+      console.log('Obteniendo datos del usuario con ID:', userId);
+      console.log('Token:', token);
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}api/users/${userId}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       });
-      if (res.ok) {
-        const data = await res.json();
-        setUserData({
-          name: data.name,
-          email: data.email,
-          career: data.career || '',
-          description: data.description || '',
-          imageUrl: data.imageUrl || '',
-          phone: data.phone || '',
-        });
+      console.log('Respuesta de usuario:', res);
+      if (!res.ok) {
+        console.error('Error al obtener datos del usuario:', res.statusText);
+        return;
       }
+
+      const data = await res.json();
+      setUserData({
+        name: data.name,
+        email: data.email,
+        career: data.career || '',
+        description: data.description || '',
+        imageUrl: data.imageUrl || '',
+        phone: data.phone || '',
+      });
     }
     if (userId && token) fetchUser();
-  }, [userId, token]);
+  }, []);
 
   // Obtener libros del usuario
   useEffect(() => {
     async function fetchBooks() {
-      const res = await fetch(`/api/books/owner/${userId}`);
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}api/books/owner/${userId}`);
       if (res.ok) {
         const data = await res.json();
         setBooks(data);
@@ -80,8 +88,8 @@ export const ProfileScreen = () => {
   // Obtener historial de intercambios
   useEffect(() => {
     async function fetchHistory() {
-      const res = await fetch(`/api/exchange/user/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` }
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}api/exchange/user/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
         const data = await res.json();
@@ -97,13 +105,13 @@ export const ProfileScreen = () => {
   };
 
   const handleSave = async () => {
-    const res = await fetch(`/api/users/${userId}`, {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}api/users/${userId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(userData)
+      body: JSON.stringify(userData),
     });
     if (res.ok) setEditing(false);
   };
@@ -115,42 +123,38 @@ export const ProfileScreen = () => {
 
   const handleBookSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await fetch('/api/books/', {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}api/books/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         ...book,
-        ownerId: userId
-      })
+        ownerId: userId,
+      }),
     });
     if (res.ok) {
       setShowModal(false);
       setBook({ title: '', author: '', publicationYear: '', description: '', isbn: '' });
       // Refresca libros
-      const booksRes = await fetch(`/api/books/owner/${userId}`);
+      const booksRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/books/owner/${userId}`);
       if (booksRes.ok) setBooks(await booksRes.json());
     }
   };
 
   // Cambiar status de libro
   const handleExchangeableToggle = async (bookId: string, status: boolean) => {
-    const res = await fetch(`/api/books/${bookId}/status`, {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/books/${bookId}/status`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ status: !status })
+      body: JSON.stringify({ status: !status }),
     });
     if (res.ok) {
-      setBooks(books =>
-        books.map(b =>
-          b.id === bookId ? { ...b, status: !b.status } : b
-        )
-      );
+      setBooks(books => books.map(b => (b.id === bookId ? { ...b, status: !b.status } : b)));
     }
   };
 
@@ -161,19 +165,19 @@ export const ProfileScreen = () => {
       const formData = new FormData();
       formData.append('image', file);
 
-      const res = await fetch(`/api/users/${userId}`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${userId}`, {
         method: 'PUT',
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        body: formData
+        body: formData,
       });
 
       if (res.ok) {
         const data = await res.json();
         setUserData(prev => ({
           ...prev,
-          imageUrl: data.imageUrl
+          imageUrl: data.imageUrl,
         }));
       }
     }
@@ -181,18 +185,18 @@ export const ProfileScreen = () => {
 
   // Eliminar foto de perfil
   const handleRemoveImage = async () => {
-    const res = await fetch(`/api/users/${userId}`, {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${userId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ imageUrl: '' })
+      body: JSON.stringify({ imageUrl: '' }),
     });
     if (res.ok) {
       setUserData(prev => ({
         ...prev,
-        imageUrl: ''
+        imageUrl: '',
       }));
     }
   };
@@ -203,62 +207,28 @@ export const ProfileScreen = () => {
         <div className="profile-photo-wrapper">
           <img src={userData.imageUrl || '/default-profile.png'} alt="Foto de perfil" className="profile-photo" />
           <label className="photo-overlay">
-            <input
-              type="file"
-              accept="image/*"
-              style={{ display: "none" }}
-              onChange={handleImageChange}
-            />
+            <input type="file" accept="image/*" style={{ display: 'none' }} onChange={handleImageChange} />
             Cambiar foto de perfil
           </label>
           {userData.imageUrl && (
-            <button
-              type="button"
-              className="remove-photo-btn"
-              onClick={handleRemoveImage}
-              style={{ marginTop: '8px' }}
-            >
+            <button type="button" className="remove-photo-btn" onClick={handleRemoveImage} style={{ marginTop: '8px' }}>
               Quitar foto de perfil
             </button>
           )}
         </div>
         <div className="profile-info">
           {editing ? (
-            <form className="edit-form" onSubmit={e => { e.preventDefault(); handleSave(); }}>
-              <input
-                type="text"
-                name="name"
-                value={userData.name}
-                onChange={handleChange}
-                placeholder="Nombre"
-              />
-              <input
-                type="email"
-                name="email"
-                value={userData.email}
-                onChange={handleChange}
-                placeholder="Correo electrónico"
-              />
-              <input
-                type="text"
-                name="career"
-                value={userData.career}
-                onChange={handleChange}
-                placeholder="Carrera"
-              />
-              <textarea
-                name="description"
-                value={userData.description}
-                onChange={handleChange}
-                placeholder="Descripción"
-              />
-              <input
-                type="text"
-                name="phone"
-                value={userData.phone}
-                onChange={handleChange}
-                placeholder="Teléfono"
-              />
+            <form
+              className="edit-form"
+              onSubmit={e => {
+                e.preventDefault();
+                handleSave();
+              }}>
+              <input type="text" name="name" value={userData.name} onChange={handleChange} placeholder="Nombre" />
+              <input type="email" name="email" value={userData.email} onChange={handleChange} placeholder="Correo electrónico" />
+              <input type="text" name="career" value={userData.career} onChange={handleChange} placeholder="Carrera" />
+              <textarea name="description" value={userData.description} onChange={handleChange} placeholder="Descripción" />
+              <input type="text" name="phone" value={userData.phone} onChange={handleChange} placeholder="Teléfono" />
               <button type="submit">Guardar</button>
             </form>
           ) : (
@@ -287,45 +257,11 @@ export const ProfileScreen = () => {
           <div className="modal-content">
             <h3>Agregar libro</h3>
             <form onSubmit={handleBookSubmit} className="book-form">
-              <input
-                type="text"
-                name="title"
-                value={book.title}
-                onChange={handleBookChange}
-                placeholder="Nombre del libro"
-                required
-              />
-              <input
-                type="text"
-                name="author"
-                value={book.author}
-                onChange={handleBookChange}
-                placeholder="Autor"
-                required
-              />
-              <input
-                type="number"
-                name="publicationYear"
-                value={book.publicationYear}
-                onChange={handleBookChange}
-                placeholder="Año"
-                required
-              />
-              <input
-                type="text"
-                name="isbn"
-                value={book.isbn}
-                onChange={handleBookChange}
-                placeholder="ISBN"
-                required
-              />
-              <textarea
-                name="description"
-                value={book.description}
-                onChange={handleBookChange}
-                placeholder="Descripción"
-                rows={3}
-              />
+              <input type="text" name="title" value={book.title} onChange={handleBookChange} placeholder="Nombre del libro" required />
+              <input type="text" name="author" value={book.author} onChange={handleBookChange} placeholder="Autor" required />
+              <input type="number" name="publicationYear" value={book.publicationYear} onChange={handleBookChange} placeholder="Año" required />
+              <input type="text" name="isbn" value={book.isbn} onChange={handleBookChange} placeholder="ISBN" required />
+              <textarea name="description" value={book.description} onChange={handleBookChange} placeholder="Descripción" rows={3} />
               <div className="modal-actions">
                 <button type="submit">Agregar</button>
                 <button type="button" onClick={() => setShowModal(false)}>
@@ -338,23 +274,21 @@ export const ProfileScreen = () => {
       )}
 
       <div className="books-grid">
-        {books.map((b) => (
+        {books.map(b => (
           <div className="book-card" key={b.id}>
             <h4>{b.title}</h4>
-            <p><strong>Autor:</strong> {b.author}</p>
-            <p><strong>Año:</strong> {b.publicationYear}</p>
+            <p>
+              <strong>Autor:</strong> {b.author}
+            </p>
+            <p>
+              <strong>Año:</strong> {b.publicationYear}
+            </p>
             <p>{b.description}</p>
             <label className="switch">
-              <input
-                type="checkbox"
-                checked={b.status}
-                onChange={() => handleExchangeableToggle(b.id, b.status)}
-              />
+              <input type="checkbox" checked={b.status} onChange={() => handleExchangeableToggle(b.id, b.status)} />
               <span className="slider"></span>
             </label>
-            <span className="exchange-status">
-              {b.status ? 'Disponible para intercambio' : 'No disponible'}
-            </span>
+            <span className="exchange-status">{b.status ? 'Disponible para intercambio' : 'No disponible'}</span>
           </div>
         ))}
       </div>
@@ -362,7 +296,7 @@ export const ProfileScreen = () => {
       <div className="exchange-history">
         <h3>Historial de intercambios</h3>
         <ul>
-          {exchangeHistory.map((h) => (
+          {exchangeHistory.map(h => (
             <li key={h.id}>
               <strong>{h.bookTitle}</strong> - {h.date} con {h.withUser}
             </li>

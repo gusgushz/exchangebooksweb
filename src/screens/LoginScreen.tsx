@@ -1,13 +1,15 @@
-import React, { useState } from "react";
-import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
+import React, { useState } from 'react';
+import { FaUser, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import type { FormEvent } from 'react';
-import axios from 'axios';
 import logo from '../assets/logo2.png';
 import './LoginScreen.css';
+import { PostLogin } from '../api/PostLogin';
+import { useNavigate } from 'react-router';
 
 export const LoginScreen = () => {
-  const [username, setUsername] = useState(""); // Aquí será email
-  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const [username, setUsername] = useState(''); // Aquí será email
+  const [password, setPassword] = useState('');
   const [mostrarContrasena, setMostrarContrasena] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
@@ -24,14 +26,12 @@ export const LoginScreen = () => {
     }
 
     try {
-      const response = await axios.post('https://exchangebooks.up.railway.app/api/login', {
-        email: username,
-        password: password
-      });
+      const response = await PostLogin(username, password);
 
-      console.log('Respuesta login:', response.data);
+      console.log('Respuesta login:', response);
       setSuccessMsg('¡Login exitoso!');
       setErrorMsg('');
+      navigate('/', { replace: true }); // Redirige al inicio o a la página que desees después del login
       // Aquí puedes guardar token o info si la API lo devuelve
     } catch (error: any) {
       console.error('Error en login:', error);
@@ -52,13 +52,7 @@ export const LoginScreen = () => {
 
         <div className="input-group">
           <FaUser className="icon" />
-          <input
-            type="email"
-            placeholder="Correo electrónico"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
+          <input type="email" placeholder="Correo electrónico" value={username} onChange={e => setUsername(e.target.value)} required />
         </div>
 
         <div className="input-group password-group">
@@ -67,13 +61,10 @@ export const LoginScreen = () => {
             type={mostrarContrasena ? 'text' : 'password'}
             placeholder="Contraseña"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
             required
           />
-          <span
-            className="toggle-password-icon"
-            onClick={() => setMostrarContrasena(!mostrarContrasena)}
-          >
+          <span className="toggle-password-icon" onClick={() => setMostrarContrasena(!mostrarContrasena)}>
             {mostrarContrasena ? <FaEyeSlash /> : <FaEye />}
           </span>
         </div>
@@ -81,7 +72,9 @@ export const LoginScreen = () => {
         {errorMsg && <p className="error">{errorMsg}</p>}
         {successMsg && <p className="success">{successMsg}</p>}
 
-        <button type="submit" className="login-button">Continuar</button>
+        <button type="submit" className="login-button">
+          Continuar
+        </button>
       </form>
     </div>
   );

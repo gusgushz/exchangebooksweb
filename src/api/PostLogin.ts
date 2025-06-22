@@ -12,14 +12,14 @@ export const PostLogin = async (email: string, password: string) => {
       throw new Error('Credenciales incorrectas');
     }
 
-    const { token, user } = await response.json();
+    const { token, userLogged } = await response.json();
 
     // ✅ Guardar en localStorage
     localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('user', JSON.stringify(userLogged));
 
-    console.log('Sesión iniciada con:', user);
-    return user;
+    console.log('Sesión iniciada con:', JSON.stringify(userLogged));
+    return userLogged;
   } catch (error) {
     console.error('Error al iniciar sesión:', error);
     return null;

@@ -1,11 +1,13 @@
-import { useEffect,useState } from "react";
-import "./App.css";
-import logo from "./assets/logo.jpg";
-import portada from "./assets/portada.jpg";
-import Libro from "./assets/libro.png";
-import conexion from "./assets/conexion.png";
-import estrella from "./assets/estrella.png";
-import Perfil from "./assets/Perfil.png";
+import { useEffect, useState } from 'react';
+import './App.css';
+import logo from './assets/logo.jpg';
+import portada from './assets/portada.jpg';
+import Libro from './assets/libro.png';
+import conexion from './assets/conexion.png';
+import estrella from './assets/estrella.png';
+import Perfil from './assets/Perfil.png';
+import { GetAvailableBooks } from './api';
+import { NavBar } from './components/navBar';
 // import { ProfileScreen } from "./screens";
 // import { useNavigate } from 'react-router';
 
@@ -17,32 +19,23 @@ type Book = {
 };
 
 function App() {
+  const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null;
+  console.log('user', user);
   const [availableBooks, setAvailableBooks] = useState<Book[]>([]);
   // const navigate = useNavigate();
 
   useEffect(() => {
-    let timeout: ReturnType<typeof setTimeout>;
-    function hideFooterOnScroll() {
-      const footer = document.getElementById("footer");
-      if (footer) {
-        footer.classList.add("hide");
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
-          footer.classList.remove("hide");
-        }, 1000); // El footer reaparece después de 2 segundos sin scroll
-      }
-    }
-    window.addEventListener("scroll", hideFooterOnScroll);
-    return () => window.removeEventListener("scroll", hideFooterOnScroll);
-  }, []);
-
-  useEffect(() => {
     async function fetchBooks() {
       try {
-        const res = await fetch('/api/books/available');
-        if (!res.ok) throw new Error('Error al obtener libros');
-        const data = await res.json();
-        setAvailableBooks(data); // Asegúrate que el formato coincida
+        const res = await GetAvailableBooks();
+        console.log('Libros disponibles:', res);
+
+        const booksData: Book[] = res.map((book: any) => ({
+          id: book.id,
+          title: book.title,
+          imageUrl: book.image_url, // Usa una imagen por defecto si no hay
+        }));
+        setAvailableBooks(booksData); // Asegúrate que el formato coincida
       } catch (err) {
         console.error(err);
       }
@@ -55,36 +48,29 @@ function App() {
       <header className="header">
         <div className="header-content">
           <div className="logo">
-            <img src= {logo} alt="Librova" />
+            <img src={logo} alt="Librova" />
           </div>
           <form
-  className="search-bar"
-  onSubmit={async (e) => {
-    e.preventDefault();
-    const input = (e.currentTarget.elements.namedItem("search") as HTMLInputElement);
-    const keyword = input?.value.trim();
-    if (!keyword) return;
-    try {
-      const res = await fetch(`/api/books/available/search?keyword=${encodeURIComponent(keyword)}`);
-      if (!res.ok) throw new Error("Error al buscar libros");
-      const data = await res.json();
-      setAvailableBooks(data); // Actualiza el carrusel con los resultados
-    } catch (err) {
-      console.error(err);
-      alert("No se pudieron buscar libros.");
-    }
-  }}
->
+            className="search-bar"
+            onSubmit={async e => {
+              e.preventDefault();
+              const input = e.currentTarget.elements.namedItem('search') as HTMLInputElement;
+              const keyword = input?.value.trim();
+              if (!keyword) return;
+              try {
+                const res = await fetch(`/api/books/available/search?search=${encodeURIComponent(keyword)}`);
+                if (!res.ok) throw new Error('Error al buscar libros');
+                const data = await res.json();
+                setAvailableBooks(data); // Actualiza el carrusel con los resultados
+              } catch (err) {
+                console.error(err);
+                alert('No se pudieron buscar libros.');
+              }
+            }}>
             <span className="search-icon">🔍</span>
             <input type="text" name="search" placeholder="Buscar libros..." />
           </form>
-          <nav className="nav-links">
-            <a href="#">Inicio</a>
-            <a href="#acerca-de">Acerca de</a>
-            <span className="profile-icon">
-              <img src= {Perfil} alt="Perfil" />
-            </span>
-          </nav>
+          <NavBar></NavBar>
         </div>
       </header>
 
@@ -105,11 +91,11 @@ function App() {
         </section>
 
         <section className="cards">
-            <div className="card">
+          <div className="card">
             <img className="icon" src={Libro} alt="Ícono libro" />
             <h3>Intercambia Libros</h3>
             <p>Da y recibe libros fácilmente.</p>
-            </div>
+          </div>
           <div className="card">
             <img className="icon" src={conexion} alt="conexion" />
             <h3>Conéctate con otros</h3>
@@ -125,11 +111,13 @@ function App() {
         <section className="carousel-section">
           <h2>Libros disponibles para intercambio</h2>
           <div className="carousel">
-            <button className="carousel-btn left" onClick={() => scrollCarousel(-1)}>&lt;</button>
+            <button className="carousel-btn left" onClick={() => scrollCarousel(-1)}>
+              &lt;
+            </button>
             <div className="carousel-track" id="carousel-track">
               {/* Ejemplo de libros, puedes reemplazar por datos reales */}
               {availableBooks.length > 0 ? (
-                availableBooks.map((book) => (
+                availableBooks.map(book => (
                   <div className="carousel-item" key={book.id}>
                     <img src={book.imageUrl} alt={book.title} />
                     <p>{book.title}</p>
@@ -139,7 +127,9 @@ function App() {
                 <p>Cargando libros...</p>
               )}
             </div>
-            <button className="carousel-btn right" onClick={() => scrollCarousel(1)}>&gt;</button>
+            <button className="carousel-btn right" onClick={() => scrollCarousel(1)}>
+              &gt;
+            </button>
           </div>
         </section>
 
@@ -172,48 +162,55 @@ function App() {
         <section className="about-section" id="acerca-de">
           <h2>Acerca de Librova</h2>
           <p>
-            Librova es una plataforma creada por y para estudiantes, donde puedes intercambiar libros usados de manera fácil, segura y gratuita. 
-            Nuestra misión es fomentar la colaboración, el acceso a la lectura y el ahorro entre la comunidad estudiantil. 
-            ¡Únete, comparte tus libros y encuentra nuevas lecturas para tu crecimiento académico y personal!
+            Librova es una plataforma creada por y para estudiantes, donde puedes intercambiar libros usados de manera fácil, segura y gratuita.
+            Nuestra misión es fomentar la colaboración, el acceso a la lectura y el ahorro entre la comunidad estudiantil. ¡Únete, comparte tus libros
+            y encuentra nuevas lecturas para tu crecimiento académico y personal!
           </p>
         </section>
       </main>
 
       <footer className="footer" id="footer">
-  <div className="footer-content">
-    <div className="footer-section">
-      <h4>Redes sociales</h4>
-      <div className="footer-social">
-        <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" title="Facebook">
-          <span role="img" aria-label="Facebook">📘</span>
-        </a>
-        <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" title="Twitter">
-          <span role="img" aria-label="Twitter">🐦</span>
-        </a>
-        <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" title="Instagram">
-          <span role="img" aria-label="Instagram">📸</span>
-        </a>
-      </div>
+        <div className="footer-content">
+          <div className="footer-section">
+            <h4>Redes sociales</h4>
+            <div className="footer-social">
+              <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" title="Facebook">
+                <span role="img" aria-label="Facebook">
+                  📘
+                </span>
+              </a>
+              <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" title="Twitter">
+                <span role="img" aria-label="Twitter">
+                  🐦
+                </span>
+              </a>
+              <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" title="Instagram">
+                <span role="img" aria-label="Instagram">
+                  📸
+                </span>
+              </a>
+            </div>
+          </div>
+          <div className="footer-section">
+            <h4>Contacto</h4>
+            <a href="mailto:contacto@librova.com">contacto@librova.com</a>
+          </div>
+          <div className="footer-section">
+            <h4>Enlaces</h4>
+            <a href="#">Política de privacidad</a>
+            <a href="#">Términos y condiciones</a>
+            <a href="#">Preguntas frecuentes</a>
+          </div>
+        </div>
+      </footer>
     </div>
-    <div className="footer-section">
-      <h4>Contacto</h4>
-      <a href="mailto:contacto@librova.com">contacto@librova.com</a>
-    </div>
-    <div className="footer-section">
-      <h4>Enlaces</h4>
-      <a href="#">Política de privacidad</a>
-      <a href="#">Términos y condiciones</a>
-      <a href="#">Preguntas frecuentes</a>
-    </div>
-  </div>
-</footer>
-</div>
-  );}
+  );
+}
 
 function scrollCarousel(direction: number) {
-  const track = document.getElementById("carousel-track");
+  const track = document.getElementById('carousel-track');
   if (track) {
-    (track as HTMLElement).scrollBy({ left: direction * 220, behavior: "smooth" });
+    (track as HTMLElement).scrollBy({ left: direction * 220, behavior: 'smooth' });
   }
 }
 

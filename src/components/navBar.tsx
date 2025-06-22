@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from 'react-router';
+import { NavLink, redirect, replace, useNavigate } from 'react-router';
 import Perfil from '../assets/Perfil.png';
 import '../App.css';
 import './navBar.css';
@@ -21,7 +21,7 @@ export const NavBar = () => {
   // const userLogged = null;
 
   const handleProfileClick = () => {
-    if (user) {
+    if (user !== null) {
       setIsModalOpen(prev => !prev);
     } else {
       navigate('/login');
@@ -33,6 +33,7 @@ export const NavBar = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     setIsModalOpen(false);
+    replace('/');
   };
 
   useEffect(() => {
