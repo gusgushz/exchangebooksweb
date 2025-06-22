@@ -1,0 +1,32 @@
+/* Modal que aparece al hacer clic en el perfil */
+.user-modal {
+  position: absolute;
+  top: 56px; /* Debajo del navbar */
+  right: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 160px;
+  z-index: 1050;
+  padding: 8px 0;
+}
+
+.user-modal button {
+  width: 100%;
+  padding: 10px 16px;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #000;
+}
+
+.user-modal button:hover {
+  background-color: #f0f0f0;
+}
+
+.user-modal .logout-button {
+  color: #d9534f; /* rojo tipo "danger" */
+}
