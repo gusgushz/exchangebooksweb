@@ -9,23 +9,20 @@
   --seleccion: #d4c8aa;
   --borde-input: #dbd0ba;
   --letra-secundaria: #7d6b56;
+  --error: #EF1C09;
 }
 
 /* Fondo general */
-  body {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f5f1e6;
-    margin: 0;
+body {
+  background: var(--fondo);
 }
+
 /* Contenedor principal */
 .profile-container {
-  max-width: 700px;
+  max-width: 900px;
   margin: 48px auto 0 auto;
   padding: 32px 24px;
-  background: #fffcf5;
+  background: var(--fondo-tarjeta);
   border-radius: 18px;
   box-shadow: 0 2px 12px rgba(166, 124, 82, 0.08);
 }
@@ -40,42 +37,74 @@
 }
 
 /* Foto circular grande */
-.profile-photo img {
+.profile-photo-wrapper {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-photo {
   width: 140px;
   height: 140px;
   border-radius: 50%;
   object-fit: cover;
-  border: 4px solid #dbd0ba;
+  border: 4px solid var(--borde-input);
   background: #fff;
+  display: block;
+}
+
+.photo-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(76, 63, 53, 0.82);
+  color: #fff;
+  text-align: center;
+  padding: 8px 0;
+  border-radius: 0 0 50% 50%;
+  font-size: 0.98rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.profile-photo-wrapper:hover .photo-overlay,
+.profile-photo-wrapper:focus-within .photo-overlay {
+  opacity: 1;
 }
 
 /* Info del usuario */
 .profile-info {
   flex: 1;
-  background: #e2d8c3;
+  background: var(--tarjeta-boton-secundario);
   border-radius: 12px;
   padding: 28px 24px;
-  color: #4a3f35;
+  color: var(--titulo-principal);
   font-family: 'Georgia', serif;
   min-width: 220px;
 }
 
 .profile-info h2 {
   margin: 0 0 8px 0;
-  color: #4a3f35;
+  color: var(--titulo-principal);
   font-size: 1.4rem;
 }
 
 .profile-info p {
   margin: 2px 0;
-  color: #7d6b56;
+  color: var(--letra-secundaria);
   font-size: 1rem;
 }
 
 .edit-btn {
   margin-top: 10px;
-  background: #a67c52;
-  color: #fff;
+  background: var(--boton-primario);
+  color: var(--letra-boton-primario);
   border: none;
   border-radius: 8px;
   padding: 8px 18px;
@@ -88,26 +117,56 @@
 }
 
 /* Formulario de edición */
-.edit-form input {
+.edit-form input,
+.edit-form textarea {
   display: block;
   width: 100%;
   margin-bottom: 10px;
   padding: 8px;
   border-radius: 6px;
-  border: 1.5px solid #dbd0ba;
+  border: 1.5px solid var(--borde-input);
   background: #fff;
-  color: #4a3f35;
+  color: var(--titulo-principal);
   font-size: 1rem;
 }
 .edit-form button {
-  background: #a67c52;
-  color: #fff;
+  background: var(--boton-primario);
+  color: var(--letra-boton-primario);
   border: none;
   border-radius: 8px;
   padding: 8px 18px;
   cursor: pointer;
   font-weight: bold;
   transition: background 0.2s;
+}
+
+/* Botón para cambiar foto de perfil */
+.change-photo-btn {
+  background: var(--boton-primario);
+  color: var(--letra-boton-primario);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+  display: inline-block;
+}
+.change-photo-btn:hover {
+  background: #8c6239;
+}
+.remove-photo-btn {
+  background: var(--tarjeta-boton-secundario);
+  color: var(--letra-boton-secundario);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+.remove-photo-btn:hover {
+  background: var(--seleccion);
 }
 
 /* Botón publicar libro */
@@ -117,8 +176,8 @@
   margin: 24px 0 32px 0;
 }
 .publicar-btn {
-  background: #a67c52;
-  color: #fff;
+  background: var(--boton-primario);
+  color: var(--letra-boton-primario);
   border: none;
   border-radius: 8px;
   padding: 14px 36px;
@@ -131,42 +190,87 @@
   background: #8c6239;
 }
 
-.mis-libros h3 {
-  margin-bottom: 16px;
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(166, 124, 82, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+.modal-content {
+  background: var(--fondo-tarjeta);
+  border-radius: 12px;
+  padding: 32px 24px;
+  min-width: 320px;
+  box-shadow: 0 2px 16px rgba(166, 124, 82, 0.14);
+}
+.modal-content h3 {
+  margin-top: 0;
   color: var(--titulo-principal);
   font-family: 'Georgia', serif;
 }
-
-.libros-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
+.book-form input,
+.book-form textarea {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid var(--borde-input);
+  font-size: 1rem;
+  background: #fff;
+  color: var(--titulo-principal);
+  margin-bottom: 10px;
+}
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+.modal-actions button {
+  background: var(--boton-primario);
+  color: var(--letra-boton-primario);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+.modal-actions button[type="button"] {
+  background: var(--tarjeta-boton-secundario);
+  color: var(--letra-boton-secundario);
+}
+.modal-actions button:hover {
+  background: #8c6239;
 }
 
-.libro-card {
+/* Grid de libros */
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+.book-card {
   background: var(--tarjeta-boton-secundario);
   border-radius: 10px;
   padding: 16px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   box-shadow: 0 2px 8px rgba(166, 124, 82, 0.06);
 }
-
-.libro-img img {
-  width: 70px;
-  height: 100px;
-  object-fit: cover;
-  margin-bottom: 8px;
-  background: #fff;
-  border-radius: 6px;
-  border: 1px solid var(--borde-input);
+.book-card h4 {
+  color: var(--titulo-principal);
+  margin-bottom: 6px;
 }
-
-.libro-info {
-  text-align: center;
+.book-card p {
+  color: var(--letra-secundaria);
+  margin: 2px 0;
+  font-size: 0.98rem;
 }
-
 .switch {
   position: relative;
   display: inline-block;
@@ -202,199 +306,38 @@
 .switch input:checked + .slider:before {
   transform: translateX(16px);
 }
-.switch-label {
+.exchange-status {
   display: block;
   font-size: 0.9rem;
   color: var(--letra-secundaria);
+  margin-top: 2px;
 }
 
-.historial {
+/* Historial de intercambios */
+.exchange-history {
   margin-top: 36px;
   background: var(--seleccion);
   border-radius: 10px;
   padding: 18px 18px 10px 18px;
   box-shadow: 0 2px 8px rgba(166, 124, 82, 0.06);
 }
-.historial h3 {
+.exchange-history h3 {
   color: var(--titulo-principal);
   margin-bottom: 10px;
   font-family: 'Georgia', serif;
 }
-.historial ul {
+.exchange-history ul {
   padding-left: 18px;
   color: var(--letra-secundaria);
   font-size: 1rem;
 }
 
-/* Modal */
-.modal-bg {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(166, 124, 82, 0.14);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-}
-.modal {
-  background: var(--fondo-tarjeta);
-  border-radius: 12px;
-  padding: 32px 24px;
-  min-width: 320px;
-  box-shadow: 0 2px 16px rgba(166, 124, 82, 0.14);
-}
-.modal h3 {
-  margin-top: 0;
-  color: var(--titulo-principal);
-  font-family: 'Georgia', serif;
-}
-.modal form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.modal input, .modal textarea {
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px solid var(--borde-input);
-  font-size: 1rem;
-  background: #fff;
-  color: var(--titulo-principal);
-}
-.modal button {
-  background: var(--boton-primario);
-  color: var(--letra-boton-primario);
-  border: none;
-  border-radius: 8px;
-  padding: 8px 18px;
-  cursor: pointer;
-  margin-top: 6px;
-  font-weight: bold;
-  transition: background 0.2s;
-}
-.modal button[type="button"] {
-  background: var(--tarjeta-boton-secundario);
-  color: var(--letra-boton-secundario);
-}
-.modal button:hover {
-  background: #8c6239;
-}
-.modal-overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(166, 124, 82, 0.14);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2000;
-}
-
-.modal-content {
-    background: var(--fondo-tarjeta);
-    border-radius: 12px;
-    padding: 32px 24px;
-    min-width: 320px;
-    box-shadow: 0 2px 16px rgba(166, 124, 82, 0.14);
-}
-
-.book-form {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.book-form input,
-.book-form textarea {
-    padding: 8px;
-    border-radius: 6px;
-    border: 1px solid var(--borde-input);
-    font-size: 1rem;
-    background: #fff;
-    color: var(--titulo-principal);
-}
-
-.modal-actions {
-    display: flex;
-    gap: 12px;
-    margin-top: 8px;
-}
-
-.modal-actions button[type="submit"] {
-    background: var(--boton-primario);
-    color: var(--letra-boton-primario);
-}
-
-.modal-actions button[type="button"] {
-    background: var(--tarjeta-boton-secundario);
-    color: var(--letra-boton-secundario);
-}
-
-.modal-actions button {
-    border: none;
-    border-radius: 8px;
-    padding: 8px 18px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background 0.2s;
-}
-
-.modal-actions button:hover {
-    background: #8c6239;
-    color: #fff;
-}
-
-.books-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-    margin-bottom: 32px;
-}
-
-.book-card {
-    background: var(--tarjeta-boton-secundario);
-    border-radius: 10px;
-    padding: 16px;
-    display: flex;
+@media (max-width: 600px) {
+  .profile-header {
     flex-direction: column;
     align-items: center;
-    box-shadow: 0 2px 8px rgba(166, 124, 82, 0.06);
-}
-
-.book-card h4 {
-    margin: 0 0 6px 0;
-    color: var(--titulo-principal);
-    font-size: 1.1rem;
-}
-
-.book-card p {
-    margin: 2px 0;
-    color: var(--letra-secundaria);
-    font-size: 0.98rem;
-    text-align: center;
-}
-
-.exchange-status {
-    margin-top: 6px;
-    font-size: 0.95rem;
-    color: var(--letra-secundaria);
-}
-
-.exchange-history {
-    margin-top: 36px;
-    background: var(--seleccion);
-    border-radius: 10px;
-    padding: 18px 18px 10px 18px;
-    box-shadow: 0 2px 8px rgba(166, 124, 82, 0.06);
-}
-
-.exchange-history h3 {
-    color: var(--titulo-principal);
-    margin-bottom: 10px;
-    font-family: 'Georgia', serif;
-}
-
-.exchange-history ul {
-    padding-left: 18px;
-    color: var(--letra-secundaria);
-    font-size: 1rem;
+  }
+  .profile-photo-wrapper {
+    margin-bottom: 18px;
+  }
 }
