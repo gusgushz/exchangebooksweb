@@ -23,7 +23,8 @@ const userLogged = {
   name: 'usuario',
   lastname: 'demo',
   email: 'user',
-}; // o null si no está logueado
+
+};// o null si no está logueado
 
 //FIXME: Crear funcion para obtener el usuario al que se quiere
 const otherUser = {
@@ -31,7 +32,7 @@ const otherUser = {
   name: 'usuario',
   lastname: 'demo2',
   email: 'otro',
-};
+}; 
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
