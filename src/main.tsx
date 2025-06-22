@@ -14,7 +14,6 @@ import { PublicRoute } from './navigation/PublicRoute.tsx';
 //PARA PROBAR LA NAVEGACIÓN TANTO AQUI COMO EN LOS COMPONENTES O PAGINAS TIENEN QUE ESTAR IGUAL, ES DECIR, SI VA A SER UN USUARIO LOGGEADO, DEBE ESTAR EL OBJETO userLogged en AMBOS ACTIVO, SI NO HAY USUARIO LOGGEADO DEBE ESTAR EN NULL AMBOS
 //CHECAR NAVBAR
 const user = {
-
   id: 1,
   name: 'usuario',
   lastname: 'demo',

@@ -1,15 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import TarjetaBook from '../components/TarjetaBook'; // Ajusta la ruta si es necesario
 
+interface Libro{
+  id: number;
+  title: string;
+  image_url: string;
+}
+
 export const SearchScreen = () => {
+
+  const [libros, setLibros] = useState<Libro[]>([]);
+  
+  useEffect(() => {
+    const fetchLibros = async () => {
+      try {
+        const response = await fetch('https://exchangebooks.up.railway.app/api/books/available');
+        const data = await response.json();
+        setLibros(data);
+      } catch (error) {
+        console.error('Error al obtener los libros:', error);
+      }
+    };
+
+    fetchLibros();
+  }, []);
+
   return (
     <div>
-      <TarjetaBook
-        titulo="Mi gran libro de cuentos"
-        imagen="https://http2.mlstatic.com/D_NQ_NP_973518-MLC50958432176_082022-O.webp"
-        onIntercambiar={() => alert('Intercambiar')}
-        onVerMas={() => alert('Ver más')}
-      />
+      {libros.map((libro) => (
+        <TarjetaBook
+          key={libro.id}
+          titulo={libro.title}
+          imagen={libro.image_url}
+          onIntercambiar={() => alert(`Intercambiar ${libro.title}`)}
+          onVerMas={() => alert(`Ver más sobre ${libro.title}`)}
+        />
+      ))}
     </div>
   );
 };
