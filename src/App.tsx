@@ -171,8 +171,9 @@ function App() {
           onVerMas={() => alert('Ver más')}
         />
 
-        <div>
-          <button onClick={() => navigate('/perfilusuario')}>Ir a detalle del libro</button>
+        <div> 
+          <button onClick={() => navigate('/perfil-usuario')}>Ir a detalle del libro</button>
+
         </div>
       </div>
       <SearchScreen />
