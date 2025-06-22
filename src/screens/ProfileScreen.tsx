@@ -1,148 +1,274 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ProfileScreen.css';
-import Perfilfoto from '../assets/PerfilFoto.jpg';
 
 type Book = {
+  id: string;
   title: string;
   author: string;
-  year: string;
+  publicationYear: string;
   description: string;
-  exchangeable: boolean;
+  status: boolean;
 };
 
 type ExchangeHistory = {
+  id: string;
   bookTitle: string;
   date: string;
   withUser: string;
 };
 
 export const ProfileScreen = () => {
-  // Estado para los datos editables del usuario
-  const [user, setUser] = useState({
-    name: 'Nombre de Usuario',
-    email: 'usuario@email.com',
-    career: 'Carrera',
-    password: '********',
-  });
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const token = localStorage.getItem('token');
+  const userId = user.id;
 
-  // Estado para la edición
+  const [userData, setUserData] = useState({
+    name: '',
+    email: '',
+    career: '',
+    description: '',
+    imageUrl: '',
+    phone: '',
+  });
   const [editing, setEditing] = useState(false);
 
-  // Estado para el modal de libro
   const [showModal, setShowModal] = useState(false);
-
-  // Estado para los datos del libro
   const [book, setBook] = useState({
     title: '',
     author: '',
-    year: '',
+    publicationYear: '',
     description: '',
+    isbn: '',
   });
 
-  // Estado para los libros del usuario
-  const [books, setBooks] = useState<Book[]>([
-    // Ejemplo de libros iniciales
-    { title: 'Libro 1', author: 'Autor 1', year: '2020', description: 'Descripción 1', exchangeable: true },
-    { title: 'Libro 2', author: 'Autor 2', year: '2021', description: 'Descripción 2', exchangeable: false },
-    { title: 'Libro 3', author: 'Autor 3', year: '2019', description: 'Descripción 3', exchangeable: true },
-    { title: 'Libro 4', author: 'Autor 4', year: '2018', description: 'Descripción 4', exchangeable: true },
-    { title: 'Libro 5', author: 'Autor 5', year: '2022', description: 'Descripción 5', exchangeable: false },
-    { title: 'Libro 6', author: 'Autor 6', year: '2017', description: 'Descripción 6', exchangeable: true },
-    { title: 'Libro 7', author: 'Autor 7', year: '2016', description: 'Descripción 7', exchangeable: false },
-    { title: 'Libro 8', author: 'Autor 8', year: '2015', description: 'Descripción 8', exchangeable: true },
-    { title: 'Libro 9', author: 'Autor 9', year: '2014', description: 'Descripción 9', exchangeable: true },
-  ]);
+  const [books, setBooks] = useState<Book[]>([]);
+  const [exchangeHistory, setExchangeHistory] = useState<ExchangeHistory[]>([]);
 
-  // Estado para historial de intercambios
-  const [exchangeHistory] = useState<ExchangeHistory[]>([
-    { bookTitle: 'Libro 1', date: '2024-05-01', withUser: 'Juan Pérez' },
-    { bookTitle: 'Libro 5', date: '2024-04-15', withUser: 'Ana Gómez' },
-  ]);
+  // Obtener datos del usuario
+  useEffect(() => {
+    async function fetchUser() {
+      const res = await fetch(`/api/users/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setUserData({
+          name: data.name,
+          email: data.email,
+          career: data.career || '',
+          description: data.description || '',
+          imageUrl: data.imageUrl || '',
+          phone: data.phone || '',
+        });
+      }
+    }
+    if (userId && token) fetchUser();
+  }, [userId, token]);
 
-  // Manejadores de cambio
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+  // Obtener libros del usuario
+  useEffect(() => {
+    async function fetchBooks() {
+      const res = await fetch(`/api/books/owner/${userId}`);
+      if (res.ok) {
+        const data = await res.json();
+        setBooks(data);
+      }
+    }
+    if (userId) fetchBooks();
+  }, [userId]);
+
+  // Obtener historial de intercambios
+  useEffect(() => {
+    async function fetchHistory() {
+      const res = await fetch(`/api/exchange/user/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setExchangeHistory(data);
+      }
+    }
+    if (userId && token) fetchHistory();
+  }, [userId, token]);
+
+  // Editar perfil
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
-  const handleEdit = () => setEditing(true);
-  const handleSave = () => setEditing(false);
+  const handleSave = async () => {
+    const res = await fetch(`/api/users/${userId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(userData)
+    });
+    if (res.ok) setEditing(false);
+  };
 
-  // Manejadores del modal
+  // Publicar libro
   const handleBookChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setBook({ ...book, [e.target.name]: e.target.value });
   };
 
-  const handleBookSubmit = (e: React.FormEvent) => {
+  const handleBookSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setBooks([
-      ...books,
-      { ...book, exchangeable: true },
-    ]);
-    setShowModal(false);
-    setBook({ title: '', author: '', year: '', description: '' });
+    const res = await fetch('/api/books/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        ...book,
+        ownerId: userId
+      })
+    });
+    if (res.ok) {
+      setShowModal(false);
+      setBook({ title: '', author: '', publicationYear: '', description: '', isbn: '' });
+      // Refresca libros
+      const booksRes = await fetch(`/api/books/owner/${userId}`);
+      if (booksRes.ok) setBooks(await booksRes.json());
+    }
   };
 
-  // Cambiar estado de intercambio
-  const handleExchangeableToggle = (index: number) => {
-    setBooks(books =>
-      books.map((b, i) =>
-        i === index ? { ...b, exchangeable: !b.exchangeable } : b
-      )
-    );
+  // Cambiar status de libro
+  const handleExchangeableToggle = async (bookId: string, status: boolean) => {
+    const res = await fetch(`/api/books/${bookId}/status`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ status: !status })
+    });
+    if (res.ok) {
+      setBooks(books =>
+        books.map(b =>
+          b.id === bookId ? { ...b, status: !b.status } : b
+        )
+      );
+    }
+  };
+
+  // Manejar cambio de imagen
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const formData = new FormData();
+      formData.append('image', file);
+
+      const res = await fetch(`/api/users/${userId}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        body: formData
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setUserData(prev => ({
+          ...prev,
+          imageUrl: data.imageUrl
+        }));
+      }
+    }
+  };
+
+  // Eliminar foto de perfil
+  const handleRemoveImage = async () => {
+    const res = await fetch(`/api/users/${userId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ imageUrl: '' })
+    });
+    if (res.ok) {
+      setUserData(prev => ({
+        ...prev,
+        imageUrl: ''
+      }));
+    }
   };
 
   return (
     <div className="profile-container">
       <div className="profile-header">
-        <div className="profile-photo">
-          <img
-            src={Perfilfoto}
-            alt="Foto de perfil"
-            className="profile-image"
-          />
+        <div className="profile-photo-wrapper">
+          <img src={userData.imageUrl || '/default-profile.png'} alt="Foto de perfil" className="profile-photo" />
+          <label className="photo-overlay">
+            <input
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleImageChange}
+            />
+            Cambiar foto de perfil
+          </label>
+          {userData.imageUrl && (
+            <button
+              type="button"
+              className="remove-photo-btn"
+              onClick={handleRemoveImage}
+              style={{ marginTop: '8px' }}
+            >
+              Quitar foto de perfil
+            </button>
+          )}
         </div>
         <div className="profile-info">
           {editing ? (
-            <form className="edit-form">
+            <form className="edit-form" onSubmit={e => { e.preventDefault(); handleSave(); }}>
               <input
                 type="text"
                 name="name"
-                value={user.name}
+                value={userData.name}
                 onChange={handleChange}
                 placeholder="Nombre"
               />
               <input
                 type="email"
                 name="email"
-                value={user.email}
+                value={userData.email}
                 onChange={handleChange}
-                placeholder="Correo"
+                placeholder="Correo electrónico"
               />
               <input
                 type="text"
                 name="career"
-                value={user.career}
+                value={userData.career}
                 onChange={handleChange}
                 placeholder="Carrera"
               />
-              <input
-                type="password"
-                name="password"
-                value={user.password}
+              <textarea
+                name="description"
+                value={userData.description}
                 onChange={handleChange}
-                placeholder="Contraseña"
+                placeholder="Descripción"
               />
-              <button type="button" onClick={handleSave}>
-                Guardar
-              </button>
+              <input
+                type="text"
+                name="phone"
+                value={userData.phone}
+                onChange={handleChange}
+                placeholder="Teléfono"
+              />
+              <button type="submit">Guardar</button>
             </form>
           ) : (
             <>
-              <h2>{user.name}</h2>
-              <p>{user.email}</p>
-              <p>{user.career}</p>
-              <p>Contraseña: ******</p>
-              <button className="edit-btn" onClick={handleEdit}>
+              <h2>{userData.name}</h2>
+              <p>{userData.email}</p>
+              <p>{userData.career}</p>
+              <p>{userData.description}</p>
+              <p>{userData.phone}</p>
+              <button className="edit-btn" onClick={() => setEditing(true)}>
                 Editar perfil
               </button>
             </>
@@ -179,10 +305,18 @@ export const ProfileScreen = () => {
               />
               <input
                 type="number"
-                name="year"
-                value={book.year}
+                name="publicationYear"
+                value={book.publicationYear}
                 onChange={handleBookChange}
                 placeholder="Año"
+                required
+              />
+              <input
+                type="text"
+                name="isbn"
+                value={book.isbn}
+                onChange={handleBookChange}
+                placeholder="ISBN"
                 required
               />
               <textarea
@@ -203,35 +337,33 @@ export const ProfileScreen = () => {
         </div>
       )}
 
-      {/* Grid de libros */}
       <div className="books-grid">
-        {books.map((b, idx) => (
-          <div className="book-card" key={idx}>
+        {books.map((b) => (
+          <div className="book-card" key={b.id}>
             <h4>{b.title}</h4>
             <p><strong>Autor:</strong> {b.author}</p>
-            <p><strong>Año:</strong> {b.year}</p>
+            <p><strong>Año:</strong> {b.publicationYear}</p>
             <p>{b.description}</p>
             <label className="switch">
               <input
                 type="checkbox"
-                checked={b.exchangeable}
-                onChange={() => handleExchangeableToggle(idx)}
+                checked={b.status}
+                onChange={() => handleExchangeableToggle(b.id, b.status)}
               />
               <span className="slider"></span>
             </label>
             <span className="exchange-status">
-              {b.exchangeable ? 'Disponible para intercambio' : 'No disponible'}
+              {b.status ? 'Disponible para intercambio' : 'No disponible'}
             </span>
           </div>
         ))}
       </div>
 
-      {/* Historial de intercambios */}
       <div className="exchange-history">
         <h3>Historial de intercambios</h3>
         <ul>
-          {exchangeHistory.map((h, i) => (
-            <li key={i}>
+          {exchangeHistory.map((h) => (
+            <li key={h.id}>
               <strong>{h.bookTitle}</strong> - {h.date} con {h.withUser}
             </li>
           ))}
