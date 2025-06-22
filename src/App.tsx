@@ -8,10 +8,9 @@ import estrella from './assets/estrella.png';
 import Principito from './assets/Principito.jpg';
 import Cien from './assets/Cien.jpg';
 import Quijote from './assets/Quijote.jpg';
-import Rating from './components/Rating'; // Importa el modal
-import TarjetaBook from './components/TarjetaBook'; // Importa la tarjeta de libro
+import Rating from './components/Rating'; // Importa el modal // Importa la tarjeta de libro
 import { useNavigate } from 'react-router';
-import { SearchScreen } from './screens';
+//import { SearchScreen } from './screens';
 import { NavBar } from './components/navBar';
 import { GetSearchBooks } from './api/GetSearchBooks';
 
@@ -156,6 +155,7 @@ function App() {
           </p>
         </section>
       </main>
+
       <div>
         <h1>Bienvenido a Exchange Books</h1>
         <p>Intercambia y descubre nuevos libros fácilmente.</p>
@@ -164,19 +164,11 @@ function App() {
 
         {isModalOpen && <Rating onClose={() => setIsModalOpen(false)} />}
 
-        <TarjetaBook
-          titulo="Mi gran libro de cuentos"
-          imagen="https://http2.mlstatic.com/D_NQ_NP_973518-MLC50958432176_082022-O.webp"
-          onIntercambiar={() => alert('Intercambiar')}
-          onVerMas={() => alert('Ver más')}
-        />
-
         <div> 
           <button onClick={() => navigate('/perfil-usuario')}>Ir a detalle del libro</button>
 
         </div>
       </div>
-      <SearchScreen />
 
       <footer className="footer" id="footer">
         <div className="footer-content">
