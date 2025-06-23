@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import TarjetaBook from '../components/TarjetaBook';
 import { NavBar } from '../components/navBar';
+import './SearchScreen.css';
+import axios from 'axios'; // Agregado para usar axios
 
 interface Libro {
   id: string;
@@ -26,7 +28,6 @@ export const SearchScreen = () => {
     if (user) {
       try {
         const userObj = JSON.parse(user);
-        // Toma nombre y apellido si existen
         const fullName = [userObj.name, userObj.lastname].filter(Boolean).join(' ');
         setUserName(fullName || 'Usuario');
       } catch {
@@ -35,38 +36,37 @@ export const SearchScreen = () => {
     }
   }, []);
 
+  const fetchLibros = async () => {
+    try {
+      const response = await axios.get('https://exchangebooks.up.railway.app/api/books/available');
+      setLibros(response.data);
+    } catch (error) {
+      console.error('Error al obtener los libros:', error);
+    }
+  };
+
   useEffect(() => {
-    const fetchLibros = async () => {
-      try {
-        const response = await fetch('https://exchangebooks.up.railway.app/api/books/available');
-        const data = await response.json();
-        setLibros(data);
-      } catch (error) {
-        console.error('Error al obtener los libros:', error);
-      }
-    };
     fetchLibros();
   }, []);
 
-  const handleSearch = (keyword: string) => {
-    // Aquí puedes hacer la búsqueda de libros
-    // Por ejemplo: llamar a tu función SearchBooks y actualizar el estado
+  const handleSearch = async (keyword: string) => {
+    try {
+      if (!keyword.trim()) {
+        fetchLibros(); // Mostrar todos si no hay búsqueda
+        return;
+      }
+
+      const response = await axios.get(`https://exchangebooks.up.railway.app/api/books/available/search`, {
+        params: { keyword }
+      });
+      setLibros(response.data);
+    } catch (error) {
+      console.error('Error en búsqueda:', error);
+    }
   };
 
-  // Redirigir a SearchScreen tras 1 seg
-  setTimeout(() => navigate('/search'), 1000);
-
-  const token = localStorage.getItem('token');
-  if (token) {
-    localStorage.setItem('token', token);
-    // setSuccessMsg('¡Login exitoso!');
-    navigate('/search'); // Redirige directamente a SearchScreen
-  } else {
-    // setErrorMsg('Token no recibido del servidor.');
-  }
-
   return (
-    <>
+    <div className="search-bg">
       <NavBar
         showSearch={true}
         showProfile={true}
@@ -82,6 +82,7 @@ export const SearchScreen = () => {
       <div className="libros-grid">
         {libros.map((libro) => (
           <TarjetaBook
+            key={libro.id}
             id={libro.id}
             titulo={libro.title}
             imagen={libro.image_url}
@@ -96,9 +97,8 @@ export const SearchScreen = () => {
           />
         ))}
       </div>
-    </>
+    </div>
   );
 };
 
 export default SearchScreen;
-

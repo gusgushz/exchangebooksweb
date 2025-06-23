@@ -29,7 +29,6 @@ const TarjetaBook: React.FC<TarjetaBookProps> = ({
   propietarioImagen,
   onVerMas,
 }) => {
-
   const navigate = useNavigate();
   const [modalAbierto, setModalAbierto] = useState(false);
   console.log({ autor, descripcion, publicacionAño });
@@ -54,9 +53,6 @@ const TarjetaBook: React.FC<TarjetaBookProps> = ({
 
       <h3 className="tarjeta-book-titulo">{titulo}</h3>
       <img className="tarjeta-book-imagen" src={imagen} alt={titulo} />
-      {/* <button className="tarjeta-book-btn" onClick={onIntercambiar}>
-        Intercambiar
-      </button> */}
 
       <button
         className="tarjeta-book-btn"
@@ -95,6 +91,5 @@ const TarjetaBook: React.FC<TarjetaBookProps> = ({
     </div>
   );
 };
-
 
 export default TarjetaBook;

@@ -1,32 +1,120 @@
-/* Modal que aparece al hacer clic en el perfil */
-.user-modal {
+body {
+  margin: 0;
+  background-color: #f5f1e6;
+}
+
+.header {
+  background-color: #f5f1e6;
+  padding: 10px 0;
+  box-shadow: none;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 20px;
+}
+
+/* Secciones izquierda, centro, derecha */
+.nav-left,
+.nav-center,
+.nav-right {
+  display: flex;
+  align-items: center;
+}
+
+.nav-left {
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.nav-center {
+  flex: 2;
+  justify-content: center;
+}
+
+.nav-right {
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.logo img {
+  height: 40px;
+  cursor: pointer;
+}
+
+/* Buscador */
+.search-bar-wrapper {
+  position: relative;
+  width: 500px;
+  max-width: 90vw;
+}
+
+.search-bar {
+  width: 100%;
+  padding: 14px 48px 14px 18px;
+  border-radius: 14px;
+  border: none;
+  font-size: 1.2rem;
+  background: #f8f3e7;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.10);
+  color: #4A3F35;
+  outline: none;
+}
+
+.search-icon {
   position: absolute;
-  top: 56px; /* Debajo del navbar */
-  right: 20px;
-  background-color: #fff;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.4rem;
+  pointer-events: none;
+  color: #4A3F35;
+}
+
+/* Navegación y perfil */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.profile-dropdown {
+  position: relative;
+}
+
+.profile-icon img {
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.profile-menu {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background: white;
   border: 1px solid #ddd;
   border-radius: 8px;
+  list-style: none;
+  padding: 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  width: 160px;
-  z-index: 1050;
-  padding: 8px 0;
+  z-index: 1000;
+  width: 180px;
 }
 
-.user-modal button {
-  width: 100%;
-  padding: 10px 16px;
-  text-align: left;
-  background: none;
-  border: none;
+.profile-menu li {
+  padding: 10px;
   cursor: pointer;
   font-size: 14px;
-  color: #000;
+  color: #333;
 }
 
-.user-modal button:hover {
+.profile-menu li:hover {
   background-color: #f0f0f0;
-}
-
-.user-modal .logout-button {
-  color: #d9534f; /* rojo tipo "danger" */
 }
