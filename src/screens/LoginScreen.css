@@ -41,7 +41,7 @@
 
 .input-group input {
   width: 100%;
-  padding: 10px 10px 10px 35px;
+  padding: 10px 40px 10px 35px; /* espacio a la derecha para el ojo */
   border: 1px solid #DBD0BA;
   background-color: #DBD0BA;
   border-radius: 5px;
@@ -50,18 +50,20 @@
   box-sizing: border-box;
 }
 
+/* Para el grupo de contraseña */
 .password-group {
   position: relative;
 }
 
 .toggle-password-icon {
   position: absolute;
-  right: 10px;
   top: 50%;
+  right: 10px;
   transform: translateY(-50%);
   cursor: pointer;
   color: #8C6545;
   font-size: 18px;
+  z-index: 1;
 }
 
 .options {
@@ -118,4 +120,26 @@
   font-size: 14px;
   text-align: center;
   margin: 10px 0 0 0;
+}
+
+.login-options {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px; /* 20px es mejor para espacio entre botón y links */
+  padding: 0 4px;
+  font-size: 0.9rem;
+}
+
+.login-options .left-option,
+.login-options .right-option {
+  color: #101010;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.login-options .left-option:hover,
+.login-options .right-option:hover {
+  color: #a95125;
 }
