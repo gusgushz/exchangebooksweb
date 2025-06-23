@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
-import logo from '../assets/logo2.png';
+import logo from '../assets/logo.png';
 import './LoginScreen.css'; // reutiliza estilos existentes
 
 export const PasswordRecoveryScreen = () => {

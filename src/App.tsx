@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
-import "./App.css";
-import logo from "./assets/logo.jpg";
-import portada from "./assets/portada.jpg";
-import Libro from "./assets/libro.png";
-import conexion from "./assets/conexion.png";
-import estrella from "./assets/estrella.png";
-import Perfil from "./assets/Perfil.png";
-=======
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router'; // Asegúrate de usar react-router-dom
 import './App.css';
@@ -20,7 +9,6 @@ import estrella from './assets/estrella.png';
 import { GetAvailableBooks, SearchBooks } from './apiFunctions';
 import { NavBar } from './components/navBar';
 import Perfil from './assets/Perfil.png';
->>>>>>> 6afac48fe3662063107c3b0cb92db44ca4de6274
 
 type Book = {
   id: string;

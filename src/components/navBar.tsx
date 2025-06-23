@@ -8,6 +8,7 @@ interface NavBarProps {
   onSearch?: (keyword: string) => void;
   showProfile?: boolean;
   showAbout?: boolean;
+  userName?: string;
 }
 
 export const NavBar = ({ showSearch = false, onSearch, showProfile = true, showAbout = true }: NavBarProps) => {
