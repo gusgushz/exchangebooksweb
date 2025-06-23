@@ -41,7 +41,7 @@
 
 .input-group input {
   width: 100%;
-  padding: 10px 40px 10px 35px; /* espacio a la derecha para el ojo */
+  padding: 10px 40px 10px 35px;
   border: 1px solid #DBD0BA;
   background-color: #DBD0BA;
   border-radius: 5px;
@@ -50,7 +50,7 @@
   box-sizing: border-box;
 }
 
-/* Para el grupo de contraseña */
+/* Agrupación específica para la contraseña */
 .password-group {
   position: relative;
 }
@@ -127,7 +127,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px; /* 20px es mejor para espacio entre botón y links */
+  margin-top: 50px;
   padding: 0 4px;
   font-size: 0.9rem;
 }
@@ -142,4 +142,16 @@
 .login-options .left-option:hover,
 .login-options .right-option:hover {
   color: #a95125;
+}
+
+/* ✅ OCULTAR ICONOS AUTOMÁTICOS DE CONTRASEÑA DEL NAVEGADOR */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear,
+input[type="password"]::-webkit-inner-spin-button,
+input[type="password"]::-webkit-outer-spin-button,
+input[type="password"]::-webkit-contacts-auto-fill-button,
+input[type="password"]::-webkit-calendar-picker-indicator,
+input[type="password"]::-webkit-password-toggle-button {
+  display: none !important;
+  -webkit-appearance: none;
 }

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState } from "react"; 
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import type { FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import axios from 'axios';
 import logo from '../assets/logo2.png';
 import './LoginScreen.css';
@@ -42,12 +42,18 @@ export const LoginScreen = () => {
       }
     } catch (error: any) {
       console.error('Error en login:', error);
-      if (error.response?.data?.message) {
-        setErrorMsg(error.response.data.message);
-      } else {
-        setErrorMsg('Error al iniciar sesión. Revisa tus credenciales.');
-      }
       setSuccessMsg('');
+
+      if (error.response) {
+        // Error con respuesta del servidor (ejemplo: credenciales incorrectas)
+        setErrorMsg('Error al iniciar sesión. Revisa tus credenciales.');
+      } else if (error.request) {
+        // No hubo respuesta del servidor (problema de red)
+        setErrorMsg('No se pudo conectar con el servidor. Intenta más tarde.');
+      } else {
+        // Otro tipo de error (JS u otro)
+        setErrorMsg('Ocurrió un error inesperado.');
+      }
     }
   };
 

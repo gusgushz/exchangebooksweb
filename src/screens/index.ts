@@ -7,3 +7,4 @@ export * from './SearchScreen';
 export * from './BookExchangeScreen';
 export * from '../components/Rating';
 export * from './UserBooksScreen';
+export * from './PasswordRecoveryScreen';

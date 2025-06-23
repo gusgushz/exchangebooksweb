@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import type { FormEvent } from 'react';
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import logo from '../assets/logo2.png';
 import './RegisterScreen.css';
 
@@ -28,21 +28,21 @@ export const RegisterScreen = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
+    setErrorMsg('');
+    setSuccessMsg('');
+
     if (!validateName(nombre) || !validateName(apellido)) {
       setErrorMsg('Nombre y apellido deben contener solo letras y al menos 2 caracteres.');
-      setSuccessMsg('');
       return;
     }
 
     if (!validateEmail(correo)) {
       setErrorMsg('Correo electrónico no válido.');
-      setSuccessMsg('');
       return;
     }
 
     if (!validatePassword(contrasena)) {
       setErrorMsg('La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.');
-      setSuccessMsg('');
       return;
     }
 
@@ -68,7 +68,18 @@ export const RegisterScreen = () => {
       }, 1500);
     } catch (error: any) {
       console.error('Error al registrar:', error);
-      setErrorMsg(error.response?.data?.message || 'Error al registrar. Intenta de nuevo.');
+
+      if (error.response) {
+        // Error del servidor (por ejemplo: correo ya registrado, validaciones fallidas, etc.)
+        setErrorMsg('No se pudo completar el registro. Intenta más tarde.');
+      } else if (error.request) {
+        // Error de red
+        setErrorMsg('No se pudo conectar con el servidor. Intenta más tarde.');
+      } else {
+        // Otro tipo de error
+        setErrorMsg('Ocurrió un error inesperado.');
+      }
+
       setSuccessMsg('');
     }
   };
