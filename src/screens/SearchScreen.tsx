@@ -5,14 +5,15 @@ import { NavBar } from '../components/navBar';
 
 interface Libro {
   id: string;
-  owner_profile_image: string;
-  owner_name: string;
-  owner_lastname: string;
   title: string;
   image_url: string;
   author: string;
   description: string;
   publication_year: string;
+  owner_id: string;
+  owner_name: string;
+  owner_lastname: string;
+  owner_profile_image: string;
 }
 
 export const SearchScreen = () => {
@@ -73,20 +74,23 @@ export const SearchScreen = () => {
         userName={userName}
         onSearch={handleSearch}
       />
+
       <div className="welcome-message-search">
         ¡Bienvenido, {userName}!
       </div>
+
       <div className="libros-grid">
         {libros.map((libro) => (
           <TarjetaBook
             id={libro.id}
-            propietario={`${libro.owner_name} ${libro.owner_lastname}`}
-            propietarioImagen={libro.owner_profile_image}
             titulo={libro.title}
             imagen={libro.image_url}
-            author={libro.author}
-            description={libro.description}
-            publication_year={libro.publication_year}
+            autor={libro.author || ''}
+            descripcion={libro.description || ''}
+            publicacionAño={libro.publication_year?.toString() || ''}
+            idPropietario={libro.owner_id}
+            propietario={`${libro.owner_name} ${libro.owner_lastname}`}
+            propietarioImagen={libro.owner_profile_image}
             onIntercambiar={() => alert(`Intercambiar ${libro.title}`)}
             onVerMas={() => alert(`Ver más sobre ${libro.title}`)}
           />

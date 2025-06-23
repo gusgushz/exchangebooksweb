@@ -40,13 +40,9 @@ export const BookExchange: React.FC = () => {
         <div className="user-books-card">
           <h2>{libro.titulo}</h2>
           <img src={libro.imagen} alt={libro.titulo} style={{ width: '150px', borderRadius: '8px' }} />
-          <p>Propietario: {libro.propietario}</p>
-          <p>Propietario: {libro.propietario}</p>
-          <p>Propietario: {libro.propietario}</p>
-
-
-
-
+          <p><strong>Autor:</strong> {libro.autor}</p>
+          <p><strong>Descripción:</strong> {libro.descripcion}</p>
+          <p><strong>Año de publicación:</strong> {libro.publicacionAño}</p>
         </div>
         <div>
           <select
@@ -63,6 +59,9 @@ export const BookExchange: React.FC = () => {
             ))}
           </select>
         </div>
+
+
+        
       </div>
 
       <form className="user-books-form" onSubmit={handleSubmit}>
