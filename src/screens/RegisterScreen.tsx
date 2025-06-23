@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import type { FormEvent } from 'react';
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import axios from 'axios';
-//import { useNavigate } from 'react-router-dom';
-import logo from '../assets/logo2.png';
+import { useNavigate } from 'react-router';
+import logo from '../assets/Logo.png';
 import './RegisterScreen.css';
 
 export const RegisterScreen = () => {
@@ -14,7 +14,7 @@ export const RegisterScreen = () => {
   const [mostrarContrasena, setMostrarContrasena] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const validateEmail = (email: string) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -48,10 +48,10 @@ export const RegisterScreen = () => {
 
     try {
       const response = await axios.post('https://exchangebooks.up.railway.app/api/register', {
-        name: nombre,
-        lastname: apellido,
-        email: correo,
-        password: contrasena
+      name: nombre,
+      lastname: apellido,
+      email: correo,
+      password: contrasena
       });
 
       console.log('Respuesta de registro:', response.data);
@@ -64,7 +64,7 @@ export const RegisterScreen = () => {
       setContrasena('');
 
       setTimeout(() => {
-        navigate('/login');
+      navigate('/login');
       }, 1500);
     } catch (error: any) {
       console.error('Error al registrar:', error);

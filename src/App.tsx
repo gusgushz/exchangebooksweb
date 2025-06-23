@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router'; // Asegúrate de usar react-router-dom
 import './App.css';
 import logo from './assets/Logo.png';
 import portada from './assets/portada.jpg';
@@ -7,8 +8,7 @@ import conexion from './assets/conexion.png';
 import estrella from './assets/estrella.png';
 import { GetAvailableBooks, SearchBooks } from './api';
 import { NavBar } from './components/navBar';
-// import { ProfileScreen } from "./screens";
-// import { useNavigate } from 'react-router';
+import Perfil from './assets/Perfil.png';
 
 type Book = {
   id: string;
@@ -19,6 +19,14 @@ type Book = {
 function App() {
   const [availableBooks, setAvailableBooks] = useState<Book[]>([]);
   const navigate = useNavigate();
+
+  // Redirección si ya hay sesión iniciada
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    if (user) {
+      navigate('/search', { replace: true });
+    }
+  }, [navigate]);
 
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>;

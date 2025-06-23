@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import type { FormEvent } from 'react';
 import logo from '../assets/Logo.png';
-//import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import axios from 'axios';
 import './LoginScreen.css';
 
@@ -12,7 +12,7 @@ export const LoginScreen = () => {
   const [mostrarContrasena, setMostrarContrasena] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
@@ -36,7 +36,7 @@ export const LoginScreen = () => {
       if (token) {
         localStorage.setItem('token', token);
         setSuccessMsg('¡Login exitoso!');
-        setTimeout(() => navigate('/'), 1000); // Redirigir al home tras 1 seg
+        navigate('/search'); // Redirige directamente a SearchScreen
       } else {
         setErrorMsg('Token no recibido del servidor.');
       }
