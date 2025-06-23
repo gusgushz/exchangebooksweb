@@ -5,7 +5,7 @@ import portada from './assets/portada.jpg';
 import Libro from './assets/libro.png';
 import conexion from './assets/conexion.png';
 import estrella from './assets/estrella.png';
-import { GetAvailableBooks, SearchBooks } from './api';
+import { GetAvailableBooks, SearchBooks } from './apiFunctions';
 import { NavBar } from './components/navBar';
 // import { ProfileScreen } from "./screens";
 import { useNavigate } from 'react-router';
@@ -19,22 +19,6 @@ type Book = {
 function App() {
   const [availableBooks, setAvailableBooks] = useState<Book[]>([]);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    let timeout: ReturnType<typeof setTimeout>;
-    function hideFooterOnScroll() {
-      const footer = document.getElementById('footer');
-      if (footer) {
-        footer.classList.add('hide');
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
-          footer.classList.remove('hide');
-        }, 1000);
-      }
-    }
-    window.addEventListener('scroll', hideFooterOnScroll);
-    return () => window.removeEventListener('scroll', hideFooterOnScroll);
-  }, []);
 
   useEffect(() => {
     async function fetchBooks() {
