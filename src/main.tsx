@@ -3,6 +3,14 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import './index.css';
+import App from './App';
+import { ProfileScreen, ErrorScreen, PublishBooks, LoginScreen, RegisterScreen, BookExchange, SearchScreen, UserBooksScreen } from './screens/';
+import { ProtectedRoute } from './navigation/ProtectedRoute.tsx';
+import { PublicRoute } from './navigation/PublicRoute.tsx';
+import { PasswordRecoveryScreen } from './screens/PasswordRecoveryScreen.tsx';
+// localStorage.removeItem('user');
+// localStorage.removeItem('token');
+
 import App from './App.tsx';
 import {
   ProfileScreen,
@@ -68,7 +76,7 @@ createRoot(document.getElementById('root')!).render(
           path="/recuperar"
           element={ // 👈 NUEVA RUTA
             <PublicRoute user={user}>
-              <PasswordRecoveryScreen />
+              <PasswordRecoveryScreen/>
             </PublicRoute>
           }
         />
@@ -111,6 +119,10 @@ createRoot(document.getElementById('root')!).render(
         <Route path="*" element={<ErrorScreen />} />
       </Routes>
     </BrowserRouter>
+
+  </StrictMode>,
+);
+
   </StrictMode>
 );
 

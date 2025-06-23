@@ -1,0 +1,89 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.userbooks-bg {
+  min-height: 100vh;
+  width: 100vw;
+  background: #F5F1E6;
+  box-sizing: border-box;
+  padding-bottom: 2rem;
+}
+
+.userbooks-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.userbooks-avatar {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #e0d3c0;
+  background: #fff;
+  margin-bottom: 1rem;
+  margin-top: 3rem;
+  
+}
+
+.userbooks-nombre {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #6d5c4d;
+  margin: 0;
+  text-align: center;
+}
+
+.userbooks-searchbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.userbooks-searchbar input {
+  padding: 0.7rem 1.5rem;
+  border-radius: 10px;
+  border: none;
+  background: #DBD0BA;
+  font-size: 1.1rem;
+  width: 500px;
+  box-shadow: 2px 2px 6px #d1c3b2;
+  outline: none;
+}
+
+.userbooks-search-icon {
+  font-size: 1.5rem;
+  color: #a67c52;
+  margin-left: -2.2rem;
+  pointer-events: none;
+}
+
+.libros-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  padding: 2rem 4vw;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+  .libros-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    padding: 1rem 2vw;
+  }
+  .userbooks-searchbar input {
+    width: 90vw;
+    max-width: 350px;
+  }
+}

@@ -1,18 +1,31 @@
 import logo from '../assets/Logo.png';
 import Perfil from '../assets/Perfil.png';
 import { useNavigate } from 'react-router';
+
 import { useState, useEffect } from 'react';
+
+
+import './navBar.css';
+
 
 interface NavBarProps {
   showSearch?: boolean;
   onSearch?: (keyword: string) => void;
   showProfile?: boolean;
   showAbout?: boolean;
+  userName?: string;
 }
 
-export const NavBar = ({ showSearch = false, onSearch, showProfile = true, showAbout = true }: NavBarProps) => {
+export const NavBar = ({
+  showSearch = false,
+  onSearch,
+  showProfile = true,
+  showAbout = true
+}: NavBarProps) => {
   const navigate = useNavigate();
-  const [user, setUser] = useState<any>(null);
+
+  //const [user, setUser] = useState<any>(null);
+
   const [menuOpen, setMenuOpen] = useState(false);
 
   // Actualizar el usuario cada vez que el componente se monte o cuando cambie localStorage
@@ -127,14 +140,26 @@ export const NavBar = ({ showSearch = false, onSearch, showProfile = true, showA
   return (
     <header className="header">
       <div className="header-content">
-        <div className="logo" style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>
-          <img src={logo} alt="Librova" />
+        {/* Logo */}
+        <div className="nav-left">
+          <div className="logo" onClick={() => navigate('/')}>
+            <img src={logo} alt="Librova" />
+          </div>
         </div>
+
+        {/* Barra de búsqueda */}
         {showSearch && (
-          <form className="search-bar" onSubmit={handleSubmit}>
-            <span className="search-icon">🔍</span>
-            <input type="text" name="search" placeholder="Buscar libros..." />
-          </form>
+          <div className="nav-center">
+            <form className="search-bar-wrapper" onSubmit={handleSubmit}>
+              <input
+                type="text"
+                name="search"
+                className="search-bar"
+                placeholder="Buscar libros..."
+              />
+              <span className="search-icon">🔍</span>
+            </form>
+          </div>
         )}
         <nav className="nav-links">
           <a href="/">Inicio</a>
