@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router';
 type Book = {
   id: string;
   title: string;
-  imageUrl: string;
+  image_url: string;
 };
 
 function App() {
@@ -29,7 +29,7 @@ function App() {
         const booksData: Book[] = res.map((book: Book) => ({
           id: book.id,
           title: book.title,
-          imageUrl: book.imageUrl, // Usa una imagen por defecto si no hay
+          image_url: book.image_url, // Usa una imagen por defecto si no hay
         }));
         setAvailableBooks(booksData); // Asegúrate que el formato coincida
       } catch (err) {
@@ -116,7 +116,7 @@ function App() {
               {availableBooks.length > 0 ? (
                 availableBooks.map(book => (
                   <div className="carousel-item" key={book.id}>
-                    <img src={book.imageUrl} alt={book.title} />
+                    <img src={book.image_url} alt={book.title} />
                     <p>{book.title}</p>
                   </div>
                 ))
