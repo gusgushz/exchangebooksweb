@@ -1,88 +1,51 @@
-* {
-  margin: 0;
-  padding: 0;
+.search-bg {
+  min-height: 100vh;
+  width: 100vw;
+  background: #f5f1e6;
+  padding: 40px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   box-sizing: border-box;
 }
 
-html, body {
+/* Barra de búsqueda */
+.search-bar-container {
   width: 100%;
-  height: auto;
-  font-family: 'Poppins', sans-serif;
-  background-color: #DBD0BA;
-}
-
-.search-screen-container {
-  padding: 30px;
-  font-family: 'Poppins', sans-serif;
-  background-color: #DBD0BA;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
 }
 
 .search-bar {
-  position: relative;
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto 30px;
-}
-
-.search-bar input {
-  width: 100%;
-  padding: 12px 40px 12px 16px; /* padding-right para espacio del icono */
-  border: 1px solid #8C6545;
-  background-color: #ddcca9;
-  border-radius: 30px;
-  font-size: 16px;
-  box-sizing: border-box;
+  width: 400px;
+  max-width: 90vw;
+  padding: 14px 48px 14px 18px;
+  border-radius: 14px;
+  border: none;
+  font-size: 1.2rem;
+  background: #f8f3e7;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.10);
+  color: #4A3F35;
+  outline: none;
 }
 
 .search-icon {
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #8C6545;
-  font-size: 18px;
-  pointer-events: none; /* hace que el clic pase al input */
+  position: relative;
+  left: -38px;
+  top: 2px;
+  font-size: 1.4rem;
+  color: #4A3F35;
+  pointer-events: none;
 }
 
-
-.book-grid {
+/* Grid de tarjetas */
+.tarjetas-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columnas fijas */
-  gap: 100px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 40px;
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
   justify-items: center;
-}
-
-
-.book-card {
-  border: 1px solid #8C6545;
-  background: #ddcca9;
-  padding: 50px;
-  border-radius: 16px;
-  text-align: center;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
-  width: 250px;
-}
-
-.book-card img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  margin-bottom: 10px;
-}
-
-.book-card button {
-  display: block;
-  width: 100%;
-  margin: 4px 0;
-  padding: 6px;
-  border: 1px solid #333;
-  background: white;
-  cursor: pointer;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-.book-card h3 {
-  font-size: 14px;
-  margin: 8px 0;
 }
