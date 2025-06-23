@@ -10,13 +10,10 @@ interface NavBarProps {
   showAbout?: boolean;
 }
 
-export const NavBar = ({
-  showSearch = false,
-  onSearch,
-  showProfile = false,
-  showAbout = true,
-}: NavBarProps) => {
+export const NavBar = ({ showSearch = false, onSearch, showProfile = true, showAbout = true }: NavBarProps) => {
   const navigate = useNavigate();
+  const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null;
+
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -28,12 +25,17 @@ export const NavBar = ({
   };
 
   const handleProfileClick = () => {
-    setMenuOpen((open) => !open);
+    if (user) {
+      setMenuOpen(open => !open);
+    } else {
+      navigate('/login');
+    }
   };
 
   const handleLogout = () => {
     localStorage.removeItem('user');
-    navigate('/login');
+    localStorage.removeItem('token');
+    navigate('/');
   };
 
   return (
@@ -53,17 +55,12 @@ export const NavBar = ({
           {showAbout && <a href="/#acerca-de">Acerca de</a>}
           {showProfile && (
             <div className="profile-dropdown">
-              <span
-                className="profile-icon"
-                onClick={handleProfileClick}
-                style={{ cursor: 'pointer' }}
-                title="Opciones de perfil"
-              >
+              <span className="profile-icon" onClick={handleProfileClick} style={{ cursor: 'pointer' }} title="Opciones de perfil">
                 <img src={Perfil} alt="Perfil" />
               </span>
               {menuOpen && (
                 <ul className="profile-menu">
-                  <li onClick={() => navigate('/profile')}>Configuración de perfil</li>
+                  <li onClick={() => navigate('/perfil')}>Configuración de perfil</li>
                   <li onClick={() => navigate('/user-books')}>Mis libros</li>
                   <li onClick={() => navigate('/publish')}>Subir un libro</li>
                   <li onClick={() => navigate('/history')}>Historial de intercambios</li>

@@ -30,21 +30,6 @@ function App() {
     }
   }, [navigate]);
 
-  useEffect(() => {
-    let timeout: ReturnType<typeof setTimeout>;
-    function hideFooterOnScroll() {
-      const footer = document.getElementById("footer");
-      if (footer) {
-        footer.classList.add("hide");
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
-          footer.classList.remove("hide");
-        }, 1000);
-      }
-    }
-    window.addEventListener("scroll", hideFooterOnScroll);
-    return () => window.removeEventListener("scroll", hideFooterOnScroll);
-  }, []);
 
   useEffect(() => {
     async function fetchBooks() {
