@@ -1,28 +1,40 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import logo from './assets/logo.jpg';
+import logo from './assets/Logo.png';
 import portada from './assets/portada.jpg';
 import Libro from './assets/libro.png';
 import conexion from './assets/conexion.png';
 import estrella from './assets/estrella.png';
-import Perfil from './assets/Perfil.png';
-import { GetAvailableBooks } from './api';
+import { GetAvailableBooks, SearchBooks } from './api';
 import { NavBar } from './components/navBar';
 // import { ProfileScreen } from "./screens";
-// import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
 type Book = {
   id: string;
   title: string;
   imageUrl: string;
-  // Agrega más campos si tu API los retorna
 };
 
 function App() {
-  const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null;
-  console.log('user', user);
   const [availableBooks, setAvailableBooks] = useState<Book[]>([]);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let timeout: ReturnType<typeof setTimeout>;
+    function hideFooterOnScroll() {
+      const footer = document.getElementById('footer');
+      if (footer) {
+        footer.classList.add('hide');
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          footer.classList.remove('hide');
+        }, 1000);
+      }
+    }
+    window.addEventListener('scroll', hideFooterOnScroll);
+    return () => window.removeEventListener('scroll', hideFooterOnScroll);
+  }, []);
 
   useEffect(() => {
     async function fetchBooks() {
@@ -58,10 +70,8 @@ function App() {
               const keyword = input?.value.trim();
               if (!keyword) return;
               try {
-                const res = await fetch(`/api/books/available/search?search=${encodeURIComponent(keyword)}`);
-                if (!res.ok) throw new Error('Error al buscar libros');
-                const data = await res.json();
-                setAvailableBooks(data); // Actualiza el carrusel con los resultados
+                const data = await SearchBooks(keyword);
+                setAvailableBooks(data);
               } catch (err) {
                 console.error(err);
                 alert('No se pudieron buscar libros.');
@@ -70,7 +80,7 @@ function App() {
             <span className="search-icon">🔍</span>
             <input type="text" name="search" placeholder="Buscar libros..." />
           </form>
-          <NavBar></NavBar>
+          <NavBar />
         </div>
       </header>
 
@@ -81,8 +91,12 @@ function App() {
             <p>"Una biblioteca colaborativa creada por y para estudiantes."</p>
             <p>Explora, conecta, ahorra a lo grande</p>
             <div className="buttons">
-              <button className="btn-login">Inicio de sesión</button>
-              <button className="btn-register">Registrarse</button>
+              <button className="btn-login" onClick={() => navigate('/login')}>
+                Inicio de sesión
+              </button>
+              <button className="btn-register" onClick={() => navigate('/register')}>
+                Registrarse
+              </button>
             </div>
           </div>
           <div className="hero-img">
@@ -115,7 +129,6 @@ function App() {
               &lt;
             </button>
             <div className="carousel-track" id="carousel-track">
-              {/* Ejemplo de libros, puedes reemplazar por datos reales */}
               {availableBooks.length > 0 ? (
                 availableBooks.map(book => (
                   <div className="carousel-item" key={book.id}>
@@ -175,13 +188,19 @@ function App() {
             <h4>Redes sociales</h4>
             <div className="footer-social">
               <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" title="Facebook">
-                <span role="img" aria-label="Facebook">📘</span>
+                <span role="img" aria-label="Facebook">
+                  📘
+                </span>
               </a>
               <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" title="Twitter">
-                <span role="img" aria-label="Twitter">🐦</span>
+                <span role="img" aria-label="Twitter">
+                  🐦
+                </span>
               </a>
               <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" title="Instagram">
-                <span role="img" aria-label="Instagram">📸</span>
+                <span role="img" aria-label="Instagram">
+                  📸
+                </span>
               </a>
             </div>
           </div>

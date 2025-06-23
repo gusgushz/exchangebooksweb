@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { FaUser, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import type { FormEvent } from 'react';
-import logo from '../assets/logo2.png';
-import './LoginScreen.css';
-import { PostLogin } from '../api/PostLogin';
 import { useNavigate } from 'react-router';
+import logo from '../assets/Logo.png';
+import './LoginScreen.css';
+import { PostLogin } from '../api/'; // Asegúrate de que la ruta sea correcta
 
 export const LoginScreen = () => {
-  const [username, setUsername] = useState(''); // Aquí será email
+  const [username, setUsername] = useState(''); // correo
   const [password, setPassword] = useState('');
   const [mostrarContrasena, setMostrarContrasena] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
-  const navigate = useNavigate(); // Hook para navegar
+  const navigate = useNavigate();
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
@@ -76,6 +76,15 @@ export const LoginScreen = () => {
         <button type="submit" className="login-button">
           Continuar
         </button>
+
+        <div className="login-options">
+          <span className="left-option" onClick={() => navigate('/register')}>
+            Registrarse
+          </span>
+          <span className="right-option" onClick={() => navigate('/recuperar')}>
+            ¿Olvidaste tu contraseña?
+          </span>
+        </div>
       </form>
     </div>
   );
