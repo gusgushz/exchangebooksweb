@@ -25,6 +25,7 @@ export const NavBar = () => {
       setIsModalOpen(prev => !prev);
     } else {
       navigate('/login');
+      window.location.reload();
     }
   };
 
@@ -34,6 +35,7 @@ export const NavBar = () => {
     localStorage.removeItem('user');
     setIsModalOpen(false);
     replace('/');
+    window.location.reload();
   };
 
   useEffect(() => {

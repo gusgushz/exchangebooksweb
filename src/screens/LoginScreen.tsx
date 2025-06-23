@@ -1,22 +1,18 @@
-import React, { useState } from "react";
-import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
+import React, { useState } from 'react';
+import { FaUser, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import type { FormEvent } from 'react';
-
 import { useNavigate } from 'react-router';
-
 import logo from '../assets/Logo.png';
-//import { useNavigate } from 'react-router-dom';
-
-import axios from 'axios';
 import './LoginScreen.css';
+import { PostLogin } from '../api/'; // Asegúrate de que la ruta sea correcta
 
 export const LoginScreen = () => {
-  const [username, setUsername] = useState(""); // correo
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState(''); // correo
+  const [password, setPassword] = useState('');
   const [mostrarContrasena, setMostrarContrasena] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
@@ -30,22 +26,14 @@ export const LoginScreen = () => {
     }
 
     try {
-      const response = await axios.post('https://exchangebooks.up.railway.app/api/login', {
-        email: username,
-        password: password
-      });
-      console.log('Respuesta login:', response.data);
-      const token = response.data?.token;
-      const userLogged = response.data?.userLogged;
+      const response = await PostLogin(username, password);
 
-      if (token && userLogged) {
-        localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(userLogged));
-        setSuccessMsg('¡Login exitoso!');
-        setTimeout(() => navigate('/buscar'), 1000); // Redirigir al home tras 1 seg
-      } else {
-        setErrorMsg('Token no recibido del servidor.');
-      }
+      console.log('Respuesta login:', response);
+      setSuccessMsg('¡Login exitoso!');
+      setErrorMsg('');
+      navigate('/', { replace: true }); // Redirige al inicio o a la página que desees después del login
+      // Aquí puedes guardar token o info si la API lo devuelve
+      window.location.reload();
     } catch (error: any) {
       console.error('Error en login:', error);
       if (error.response?.data?.message) {
@@ -65,13 +53,7 @@ export const LoginScreen = () => {
 
         <div className="input-group">
           <FaUser className="icon" />
-          <input
-            type="email"
-            placeholder="Correo electrónico"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
+          <input type="email" placeholder="Correo electrónico" value={username} onChange={e => setUsername(e.target.value)} required />
         </div>
 
         <div className="input-group password-group">
@@ -80,13 +62,10 @@ export const LoginScreen = () => {
             type={mostrarContrasena ? 'text' : 'password'}
             placeholder="Contraseña"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
             required
           />
-          <span
-            className="toggle-password-icon"
-            onClick={() => setMostrarContrasena(!mostrarContrasena)}
-          >
+          <span className="toggle-password-icon" onClick={() => setMostrarContrasena(!mostrarContrasena)}>
             {mostrarContrasena ? <FaEyeSlash /> : <FaEye />}
           </span>
         </div>
@@ -94,7 +73,9 @@ export const LoginScreen = () => {
         {errorMsg && <p className="error">{errorMsg}</p>}
         {successMsg && <p className="success">{successMsg}</p>}
 
-        <button type="submit" className="login-button">Continuar</button>
+        <button type="submit" className="login-button">
+          Continuar
+        </button>
 
         <div className="login-options">
           <span className="left-option" onClick={() => navigate('/register')}>
