@@ -14,6 +14,7 @@ type Book = {
   id: string;
   title: string;
   image_url: string;
+
 };
 
 function App() {

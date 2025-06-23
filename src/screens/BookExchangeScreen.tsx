@@ -9,18 +9,14 @@ export const BookExchange: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert(`Intercambio agendado:\nLugar: ${lugar}\nFecha: ${fecha}\nHora: ${hora}`);
+    alert(`Intercambio agendado:\nLugar: ${lugar}\nFecha: ${fecha}\nHora: ${hora}`); //ddkdkd
   };
 
   return (
     <div className="user-books-bg">
       <div className="user-books-top">
         <div className="user-books-card">
-          <h2>Mi gran libro de cuentos</h2>
-          <img
-            src="https://http2.mlstatic.com/D_NQ_NP_973518-MLC50958432176_082022-O.webp"
-            alt="Mi gran libro de cuentos"
-          />
+          
         </div>
         <button className="user-books-select-btn">
           Seleccionar
