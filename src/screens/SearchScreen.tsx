@@ -4,7 +4,6 @@ import TarjetaBook from '../components/TarjetaBook';
 import { NavBar } from '../components/navBar';
 import './SearchScreen.css';
 import axios from 'axios'; // Agregado para usar axios
-import { NavBar } from '../components/NavBar';
 import '../screens/SearchScreen.css'; // Asegúrate de tener este archivo CSS
 
 interface Libro {
