@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import type { FormEvent } from 'react';
+
+import { useNavigate } from 'react-router';
+
 import logo from '../assets/Logo.png';
 //import { useNavigate } from 'react-router-dom';
+
 import axios from 'axios';
 import './LoginScreen.css';
 
@@ -30,7 +34,6 @@ export const LoginScreen = () => {
         email: username,
         password: password
       });
-
       console.log('Respuesta login:', response.data);
       const token = response.data?.token;
       if (token) {
