@@ -30,10 +30,10 @@ function App() {
         const res = await GetAvailableBooks();
         console.log('Libros disponibles:', res);
 
-        const booksData: Book[] = res.map((book: any) => ({
+        const booksData: Book[] = res.map((book: Book) => ({
           id: book.id,
           title: book.title,
-          imageUrl: book.image_url, // Usa una imagen por defecto si no hay
+          imageUrl: book.imageUrl, // Usa una imagen por defecto si no hay
         }));
         setAvailableBooks(booksData); // Asegúrate que el formato coincida
       } catch (err) {
