@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./App.css";
-import logo from "./assets/logo.jpg";
-import portada from "./assets/portada.jpg";
-import Libro from "./assets/libro.png";
-import conexion from "./assets/conexion.png";
-import estrella from "./assets/estrella.png";
-import Perfil from "./assets/Perfil.png";
+import { useEffect, useState } from 'react';
+import './App.css';
+import logo from './assets/Logo.png';
+import portada from './assets/portada.jpg';
+import Libro from './assets/libro.png';
+import conexion from './assets/conexion.png';
+import estrella from './assets/estrella.png';
+import { GetAvailableBooks, SearchBooks } from './api';
+import { NavBar } from './components/navBar';
+// import { ProfileScreen } from "./screens";
+// import { useNavigate } from 'react-router';
 
 type Book = {
   id: string;
@@ -37,10 +39,8 @@ function App() {
   useEffect(() => {
     async function fetchBooks() {
       try {
-        const res = await fetch('/api/books/available');
-        if (!res.ok) throw new Error('Error al obtener libros');
-        const data = await res.json();
-        setAvailableBooks(data);
+        const res = await GetAvailableBooks();
+        setAvailableBooks(res);
       } catch (err) {
         console.error(err);
       }
@@ -63,9 +63,7 @@ function App() {
               const keyword = input?.value.trim();
               if (!keyword) return;
               try {
-                const res = await fetch(`/api/books/available/search?keyword=${encodeURIComponent(keyword)}`);
-                if (!res.ok) throw new Error("Error al buscar libros");
-                const data = await res.json();
+                const data = await SearchBooks(keyword);
                 setAvailableBooks(data);
               } catch (err) {
                 console.error(err);

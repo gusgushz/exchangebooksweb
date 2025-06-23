@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import type { FormEvent } from 'react';
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo2.png';
 import './RegisterScreen.css';
 
@@ -14,7 +14,7 @@ export const RegisterScreen = () => {
   const [mostrarContrasena, setMostrarContrasena] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const validateEmail = (email: string) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);

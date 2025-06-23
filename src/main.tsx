@@ -10,17 +10,17 @@ import { PublicRoute } from './navigation/PublicRoute.tsx';
 // localStorage.removeItem('user');
 // localStorage.removeItem('token');
 
-//const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null;
+const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null;
 
 //FIXME: crear contexto o localstarge para guardar sesión del usuario
 //PARA PROBAR LA NAVEGACIÓN TANTO AQUI COMO EN LOS COMPONENTES O PAGINAS TIENEN QUE ESTAR IGUAL, ES DECIR, SI VA A SER UN USUARIO LOGGEADO, DEBE ESTAR EL OBJETO userLogged en AMBOS ACTIVO, SI NO HAY USUARIO LOGGEADO DEBE ESTAR EN NULL AMBOS
 //CHECAR NAVBAR
-const user = {
-id: 1,
-name: 'usuario',
-lastname: 'demo',
-email: 'user',
-}; // o null si no está logueado
+//const user = {
+//id: 1,
+//name: 'usuario',
+//lastname: 'demo',
+//email: 'user',
+//}; // o null si no está logueado
 // // const userLogged = null;
 // //FIXME: Crear funcion para obtener el usuario al que se quiere
 // const otherUser = {
