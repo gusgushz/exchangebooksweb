@@ -32,10 +32,13 @@ export const LoginScreen = () => {
       });
       console.log('Respuesta login:', response.data);
       const token = response.data?.token;
-      if (token) {
+      const userLogged = response.data?.userLogged;
+
+      if (token && userLogged) {
         localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(userLogged));
         setSuccessMsg('¡Login exitoso!');
-        setTimeout(() => navigate('/'), 1000); // Redirigir al home tras 1 seg
+        setTimeout(() => navigate('/buscar'), 1000); // Redirigir al home tras 1 seg
       } else {
         setErrorMsg('Token no recibido del servidor.');
       }

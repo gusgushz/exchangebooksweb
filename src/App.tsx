@@ -17,6 +17,8 @@ type Book = {
 function App() {
   const [availableBooks, setAvailableBooks] = useState<Book[]>([]);
   const navigate = useNavigate();
+  const user = localStorage.getItem('user');
+  const userName = user ? JSON.parse(user).name : null;
 
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>;
@@ -79,6 +81,23 @@ function App() {
           <nav className="nav-links">
             <a href="#">Inicio</a>
             <a href="#acerca-de">Acerca de</a>
+
+            {userName && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <span className="user-name">¡Hola, {userName}!</span>
+                <button
+                  className="logout-btn"
+                  onClick={() => {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = '/';
+                  }}
+                >
+                  Cerrar sesión
+                </button>
+              </div>
+            )}
+
             <span
               className="profile-icon"
               onClick={() => navigate('/login')}
