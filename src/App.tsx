@@ -19,6 +19,8 @@ type Book = {
 function App() {
   const [availableBooks, setAvailableBooks] = useState<Book[]>([]);
   const navigate = useNavigate();
+  const user = localStorage.getItem('user');
+  const userName = user ? JSON.parse(user).name : null;
 
   // Redirección si ya hay sesión iniciada
   useEffect(() => {
