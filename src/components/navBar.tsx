@@ -75,3 +75,4 @@ export const NavBar = ({ showSearch = false, onSearch, showProfile = true, showA
     </header>
   );
 };
+

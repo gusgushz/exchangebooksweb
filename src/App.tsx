@@ -9,7 +9,7 @@ import estrella from './assets/estrella.png';
 import { GetAvailableBooks, SearchBooks } from './apiFunctions';
 import { NavBar } from './components/navBar';
 import Perfil from './assets/Perfil.png';
-
+ 
 type Book = {
   id: string;
   title: string;

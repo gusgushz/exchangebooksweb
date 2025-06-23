@@ -89,3 +89,4 @@ export const SearchScreen = () => {
 };
 
 export default SearchScreen;
+
