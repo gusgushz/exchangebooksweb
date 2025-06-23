@@ -1,26 +1,12 @@
-<<<<<<< HEAD
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
-import "./App.css";
-import logo from "./assets/logo.jpg";
-import portada from "./assets/portada.jpg";
-import Libro from "./assets/libro.png";
-import conexion from "./assets/conexion.png";
-import estrella from "./assets/estrella.png";
-import Perfil from "./assets/Perfil.png";
-=======
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router'; // Asegúrate de usar react-router-dom
+import { useNavigate } from 'react-router';
 import './App.css';
-import logo from './assets/Logo.png';
 import portada from './assets/portada.jpg';
 import Libro from './assets/libro.png';
 import conexion from './assets/conexion.png';
 import estrella from './assets/estrella.png';
 import { GetAvailableBooks, SearchBooks } from './apiFunctions';
 import { NavBar } from './components/navBar';
-import Perfil from './assets/Perfil.png';
->>>>>>> 6afac48fe3662063107c3b0cb92db44ca4de6274
 
 type Book = {
   id: string;
@@ -31,8 +17,6 @@ type Book = {
 function App() {
   const [availableBooks, setAvailableBooks] = useState<Book[]>([]);
   const navigate = useNavigate();
-  const user = localStorage.getItem('user');
-  const userName = user ? JSON.parse(user).name : null;
 
   // Redirección si ya hay sesión iniciada
   useEffect(() => {
@@ -41,7 +25,6 @@ function App() {
       navigate('/search', { replace: true });
     }
   }, [navigate]);
-
 
   useEffect(() => {
     async function fetchBooks() {
@@ -52,9 +35,9 @@ function App() {
         const booksData: Book[] = res.map((book: Book) => ({
           id: book.id,
           title: book.title,
-          image_url: book.image_url, // Usa una imagen por defecto si no hay
+          image_url: book.image_url,
         }));
-        setAvailableBooks(booksData); // Asegúrate que el formato coincida
+        setAvailableBooks(booksData);
       } catch (err) {
         console.error(err);
       }
@@ -62,35 +45,10 @@ function App() {
     fetchBooks();
   }, []);
 
+  // --- SOLO NAVBAR PARA USUARIO NO LOGUEADO ---
   return (
     <div className="App">
-      <header className="header">
-        <div className="header-content">
-          <div className="logo">
-            <img src={logo} alt="Librova" />
-          </div>
-          <form
-            className="search-bar"
-            onSubmit={async e => {
-              e.preventDefault();
-              const input = e.currentTarget.elements.namedItem('search') as HTMLInputElement;
-              const keyword = input?.value.trim();
-              if (!keyword) return;
-              try {
-                const data = await SearchBooks(keyword);
-                setAvailableBooks(data);
-              } catch (err) {
-                console.error(err);
-                alert('No se pudieron buscar libros.');
-              }
-            }}>
-            <span className="search-icon">🔍</span>
-            <input type="text" name="search" placeholder="Buscar libros..." />
-          </form>
-          <NavBar />
-        </div>
-      </header>
-
+      <NavBar showSearch={true} showProfile={true} showAbout={true} />
       <main className="main-wrapper">
         <section className="hero">
           <div className="hero-text">

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import TarjetaBook from '../components/TarjetaBook';
 import { NavBar } from '../components/NavBar';
+import '../screens/SearchScreen.css'; // Asegúrate de tener este archivo CSS
 
 interface Libro {
   id: number;
@@ -12,10 +13,13 @@ interface Libro {
 export const SearchScreen = () => {
   const [libros, setLibros] = useState<Libro[]>([]);
   const [userName, setUserName] = useState<string>('Usuario');
+  const [currentPage, setCurrentPage] = useState(1);
+  const librosPorPagina = 10;
   const navigate = useNavigate();
 
   useEffect(() => {
     const user = localStorage.getItem('user');
+    console.log('User from localStorage:', user);
     if (user) {
       try {
         const userObj = JSON.parse(user);
@@ -46,17 +50,11 @@ export const SearchScreen = () => {
     // Por ejemplo: llamar a tu función SearchBooks y actualizar el estado
   };
 
-  // Redirigir a SearchScreen tras 1 seg
-  setTimeout(() => navigate('/search'), 1000);
-
-  const token = localStorage.getItem('token');
-  if (token) {
-    localStorage.setItem('token', token);
-    // setSuccessMsg('¡Login exitoso!');
-    navigate('/search'); // Redirige directamente a SearchScreen
-  } else {
-    // setErrorMsg('Token no recibido del servidor.');
-  }
+  // Paginación
+  const indexOfLastLibro = currentPage * librosPorPagina;
+  const indexOfFirstLibro = indexOfLastLibro - librosPorPagina;
+  const librosActuales = libros.slice(indexOfFirstLibro, indexOfLastLibro);
+  const totalPaginas = Math.ceil(libros.length / librosPorPagina);
 
   return (
     <>
@@ -67,19 +65,39 @@ export const SearchScreen = () => {
         userName={userName}
         onSearch={handleSearch}
       />
-      <div className="welcome-message-search">
-        ¡Bienvenido, {userName}!
-      </div>
-      <div className="libros-grid">
-        {libros.map((libro) => (
-          <TarjetaBook
-            key={libro.id}
-            titulo={libro.title}
-            imagen={libro.image_url}
-            onIntercambiar={() => alert(`Intercambiar ${libro.title}`)}
-            onVerMas={() => alert(`Ver más sobre ${libro.title}`)}
-          />
-        ))}
+      <div className="search-main-container">
+        <div className="welcome-message-search">
+          ¡Bienvenido, {userName}!
+        </div>
+        <div className="libros-grid">
+          {librosActuales.map((libro) => (
+            <TarjetaBook
+              key={libro.id}
+              titulo={libro.title}
+              imagen={libro.image_url}
+              onIntercambiar={() => alert(`Intercambiar ${libro.title}`)}
+              onVerMas={() => alert(`Ver más sobre ${libro.title}`)}
+              onVerPropietario={() => navigate(`/perfil-publico/${libro.owner.id}`)}
+            >
+              <button onClick={() => navigate(`/perfil-publico/${libro.owner.id}`)}>Ver perfil de propietario</button>
+            </TarjetaBook>
+          ))}
+        </div>
+        <div className="pagination">
+          <button
+            onClick={() => setCurrentPage((prev) => prev - 1)}
+            disabled={currentPage === 1}
+          >
+            Anterior
+          </button>
+          <span>Página {currentPage} de {totalPaginas}</span>
+          <button
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+            disabled={currentPage === totalPaginas}
+          >
+            Siguiente
+          </button>
+        </div>
       </div>
     </>
   );

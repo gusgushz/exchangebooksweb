@@ -1,13 +1,7 @@
-<<<<<<< HEAD
 import React, { useState } from "react"; 
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import type { FormEvent } from 'react';
-=======
-import React, { useState } from 'react';
-import { FaUser, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
-import type { FormEvent } from 'react';
 import logo from '../assets/Logo.png';
->>>>>>> 6afac48fe3662063107c3b0cb92db44ca4de6274
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 import './LoginScreen.css';

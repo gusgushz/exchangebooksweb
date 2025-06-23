@@ -17,10 +17,6 @@ import {
 } from './screens/';
 import { ProtectedRoute } from './navigation/ProtectedRoute.tsx';
 import { PublicRoute } from './navigation/PublicRoute.tsx';
-
-// localStorage.removeItem('user');
-// localStorage.removeItem('token');
-
 const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null;
 
 //FIXME: crear contexto o localstarge para guardar sesión del usuario
@@ -117,3 +113,4 @@ createRoot(document.getElementById('root')!).render(
     </BrowserRouter>
   </StrictMode>
 );
+

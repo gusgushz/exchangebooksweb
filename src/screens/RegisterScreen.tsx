@@ -3,11 +3,7 @@ import type { FormEvent } from 'react';
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
-<<<<<<< HEAD
-import logo from '../assets/logo2.png';
-=======
 import logo from '../assets/Logo.png';
->>>>>>> 6afac48fe3662063107c3b0cb92db44ca4de6274
 import './RegisterScreen.css';
 
 export const RegisterScreen = () => {
