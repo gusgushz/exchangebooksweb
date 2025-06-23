@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import type { FormEvent } from 'react';
+
 import { useNavigate } from 'react-router';
+
+import logo from '../assets/Logo.png';
+//import { useNavigate } from 'react-router-dom';
+
 import axios from 'axios';
-import logo from '../assets/logo2.png';
 import './LoginScreen.css';
 
 export const LoginScreen = () => {
@@ -12,7 +16,7 @@ export const LoginScreen = () => {
   const [mostrarContrasena, setMostrarContrasena] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
