@@ -3,7 +3,11 @@ import type { FormEvent } from 'react';
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
+<<<<<<< HEAD
 import logo from '../assets/logo2.png';
+=======
+import logo from '../assets/Logo.png';
+>>>>>>> 6afac48fe3662063107c3b0cb92db44ca4de6274
 import './RegisterScreen.css';
 
 export const RegisterScreen = () => {
@@ -48,10 +52,10 @@ export const RegisterScreen = () => {
 
     try {
       const response = await axios.post('https://exchangebooks.up.railway.app/api/register', {
-        name: nombre,
-        lastname: apellido,
-        email: correo,
-        password: contrasena
+      name: nombre,
+      lastname: apellido,
+      email: correo,
+      password: contrasena
       });
 
       console.log('Respuesta de registro:', response.data);
@@ -64,7 +68,7 @@ export const RegisterScreen = () => {
       setContrasena('');
 
       setTimeout(() => {
-        navigate('/login');
+      navigate('/login');
       }, 1500);
     } catch (error: any) {
       console.error('Error al registrar:', error);

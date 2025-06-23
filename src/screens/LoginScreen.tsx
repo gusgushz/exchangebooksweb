@@ -1,14 +1,20 @@
+<<<<<<< HEAD
 import React, { useState } from "react"; 
 import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import type { FormEvent } from 'react';
+=======
+import React, { useState } from 'react';
+import { FaUser, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
+import type { FormEvent } from 'react';
+import logo from '../assets/Logo.png';
+>>>>>>> 6afac48fe3662063107c3b0cb92db44ca4de6274
 import { useNavigate } from 'react-router';
 import axios from 'axios';
-import logo from '../assets/logo2.png';
 import './LoginScreen.css';
 
 export const LoginScreen = () => {
-  const [username, setUsername] = useState(""); // correo
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState(''); // correo
+  const [password, setPassword] = useState('');
   const [mostrarContrasena, setMostrarContrasena] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
@@ -28,15 +34,19 @@ export const LoginScreen = () => {
     try {
       const response = await axios.post('https://exchangebooks.up.railway.app/api/login', {
         email: username,
-        password: password
+        password: password,
       });
 
       console.log('Respuesta login:', response.data);
       const token = response.data?.token;
+      const userLogged = response.data?.userLogged;
+
       if (token) {
+        // ✅ Guardar en localStorage
         localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(userLogged));
         setSuccessMsg('¡Login exitoso!');
-        setTimeout(() => navigate('/'), 1000); // Redirigir al home tras 1 seg
+        navigate('/search'); // Redirige directamente a SearchScreen
       } else {
         setErrorMsg('Token no recibido del servidor.');
       }
@@ -65,13 +75,7 @@ export const LoginScreen = () => {
 
         <div className="input-group">
           <FaUser className="icon" />
-          <input
-            type="email"
-            placeholder="Correo electrónico"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
+          <input type="email" placeholder="Correo electrónico" value={username} onChange={e => setUsername(e.target.value)} required />
         </div>
 
         <div className="input-group password-group">
@@ -80,13 +84,10 @@ export const LoginScreen = () => {
             type={mostrarContrasena ? 'text' : 'password'}
             placeholder="Contraseña"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
             required
           />
-          <span
-            className="toggle-password-icon"
-            onClick={() => setMostrarContrasena(!mostrarContrasena)}
-          >
+          <span className="toggle-password-icon" onClick={() => setMostrarContrasena(!mostrarContrasena)}>
             {mostrarContrasena ? <FaEyeSlash /> : <FaEye />}
           </span>
         </div>
@@ -94,7 +95,9 @@ export const LoginScreen = () => {
         {errorMsg && <p className="error">{errorMsg}</p>}
         {successMsg && <p className="success">{successMsg}</p>}
 
-        <button type="submit" className="login-button">Continuar</button>
+        <button type="submit" className="login-button">
+          Continuar
+        </button>
 
         <div className="login-options">
           <span className="left-option" onClick={() => navigate('/register')}>

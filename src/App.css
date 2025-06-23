@@ -43,9 +43,9 @@ body,
 .header-content {
   width: 100%;
   max-width: 1150px;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
   align-items: center;
-  justify-content: space-between;
   gap: 32px;
   padding: 0 32px;
   box-sizing: border-box;
@@ -145,6 +145,35 @@ body,
   height: 32px;
   border-radius: 50%;
   object-fit: cover;
+}
+
+/* Dropdown de perfil */
+.profile-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-menu {
+  position: absolute;
+  right: 0;
+  top: 40px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  min-width: 180px;
+  z-index: 100;
+}
+
+.profile-menu li {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.profile-menu li:hover {
+  background: #f0f0f0;
 }
 
 /* Contenido principal centrado */
@@ -532,6 +561,34 @@ body,
   margin: 0 auto;
   line-height: 1.6;
   font-family: 'Georgia', serif;
+}
+
+/* Grid para las tarjetas de libros */
+.libros-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+  padding: 2rem 3vw;
+  justify-items: center;
+  align-items: stretch;
+}
+
+/* Mensaje de bienvenida entre header y tarjetas */
+.welcome-message-search {
+  width: 100%;
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #6b4f2c;
+  margin: 2rem 0 1rem 0;
+  letter-spacing: 1px;
+}
+
+.welcome-message {
+  justify-self: center;
+  font-weight: bold;
+  color: #333;
+  font-size: 1.1rem;
 }
 
 @keyframes hide-on-scroll {
