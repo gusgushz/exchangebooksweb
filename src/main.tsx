@@ -36,7 +36,6 @@ createRoot(document.getElementById('root')!).render(
       <Routes>
         {/* 🌐 Rutas públicas */}
         <Route index path="/" element={<App />} />
-        <Route path="/buscar" element={<SearchScreen />} />
         <Route path="/usuario-:userId/:name-:lastname/libros" element={<UserBooksScreen />} />
 
         {/* 🌐 Rutas públicas que redirigen si estas loggeado */}
@@ -58,6 +57,14 @@ createRoot(document.getElementById('root')!).render(
         />
 
         {/* ✅ Rutas protegidas */}
+        <Route
+          path="/buscar"
+          element={
+            <ProtectedRoute user={user}>
+              <SearchScreen />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/perfil"
           element={
