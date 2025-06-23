@@ -1,41 +1,46 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-import logo from './assets/logo.jpg';
-import portada from './assets/portada.jpg';
-import Libro from './assets/libro.png';
-import conexion from './assets/conexion.png';
-import estrella from './assets/estrella.png';
-import Perfil from './assets/Perfil.png';
-import { GetAvailableBooks } from './api';
-import { NavBar } from './components/navBar';
-// import { ProfileScreen } from "./screens";
-// import { useNavigate } from 'react-router';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./App.css";
+import logo from "./assets/logo.jpg";
+import portada from "./assets/portada.jpg";
+import Libro from "./assets/libro.png";
+import conexion from "./assets/conexion.png";
+import estrella from "./assets/estrella.png";
+import Perfil from "./assets/Perfil.png";
 
 type Book = {
   id: string;
   title: string;
   imageUrl: string;
-  // Agrega más campos si tu API los retorna
 };
 
 function App() {
-  const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null;
-  console.log('user', user);
   const [availableBooks, setAvailableBooks] = useState<Book[]>([]);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let timeout: ReturnType<typeof setTimeout>;
+    function hideFooterOnScroll() {
+      const footer = document.getElementById("footer");
+      if (footer) {
+        footer.classList.add("hide");
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          footer.classList.remove("hide");
+        }, 1000);
+      }
+    }
+    window.addEventListener("scroll", hideFooterOnScroll);
+    return () => window.removeEventListener("scroll", hideFooterOnScroll);
+  }, []);
 
   useEffect(() => {
     async function fetchBooks() {
       try {
-        const res = await GetAvailableBooks();
-        console.log('Libros disponibles:', res);
-
-        const booksData: Book[] = res.map((book: any) => ({
-          id: book.id,
-          title: book.title,
-          imageUrl: book.image_url, // Usa una imagen por defecto si no hay
-        }));
-        setAvailableBooks(booksData); // Asegúrate que el formato coincida
+        const res = await fetch('/api/books/available');
+        if (!res.ok) throw new Error('Error al obtener libros');
+        const data = await res.json();
+        setAvailableBooks(data);
       } catch (err) {
         console.error(err);
       }
@@ -52,25 +57,37 @@ function App() {
           </div>
           <form
             className="search-bar"
-            onSubmit={async e => {
+            onSubmit={async (e) => {
               e.preventDefault();
-              const input = e.currentTarget.elements.namedItem('search') as HTMLInputElement;
+              const input = (e.currentTarget.elements.namedItem("search") as HTMLInputElement);
               const keyword = input?.value.trim();
               if (!keyword) return;
               try {
-                const res = await fetch(`/api/books/available/search?search=${encodeURIComponent(keyword)}`);
-                if (!res.ok) throw new Error('Error al buscar libros');
+                const res = await fetch(`/api/books/available/search?keyword=${encodeURIComponent(keyword)}`);
+                if (!res.ok) throw new Error("Error al buscar libros");
                 const data = await res.json();
-                setAvailableBooks(data); // Actualiza el carrusel con los resultados
+                setAvailableBooks(data);
               } catch (err) {
                 console.error(err);
-                alert('No se pudieron buscar libros.');
+                alert("No se pudieron buscar libros.");
               }
-            }}>
+            }}
+          >
             <span className="search-icon">🔍</span>
             <input type="text" name="search" placeholder="Buscar libros..." />
           </form>
-          <NavBar></NavBar>
+          <nav className="nav-links">
+            <a href="#">Inicio</a>
+            <a href="#acerca-de">Acerca de</a>
+            <span
+              className="profile-icon"
+              onClick={() => navigate('/login')}
+              style={{ cursor: 'pointer' }}
+              title="Ir al perfil / login"
+            >
+              <img src={Perfil} alt="Perfil" />
+            </span>
+          </nav>
         </div>
       </header>
 
@@ -81,8 +98,8 @@ function App() {
             <p>"Una biblioteca colaborativa creada por y para estudiantes."</p>
             <p>Explora, conecta, ahorra a lo grande</p>
             <div className="buttons">
-              <button className="btn-login">Inicio de sesión</button>
-              <button className="btn-register">Registrarse</button>
+              <button className="btn-login" onClick={() => navigate('/login')}>Inicio de sesión</button>
+              <button className="btn-register" onClick={() => navigate('/register')}>Registrarse</button>
             </div>
           </div>
           <div className="hero-img">
@@ -111,13 +128,10 @@ function App() {
         <section className="carousel-section">
           <h2>Libros disponibles para intercambio</h2>
           <div className="carousel">
-            <button className="carousel-btn left" onClick={() => scrollCarousel(-1)}>
-              &lt;
-            </button>
+            <button className="carousel-btn left" onClick={() => scrollCarousel(-1)}>&lt;</button>
             <div className="carousel-track" id="carousel-track">
-              {/* Ejemplo de libros, puedes reemplazar por datos reales */}
               {availableBooks.length > 0 ? (
-                availableBooks.map(book => (
+                availableBooks.map((book) => (
                   <div className="carousel-item" key={book.id}>
                     <img src={book.imageUrl} alt={book.title} />
                     <p>{book.title}</p>
@@ -127,9 +141,7 @@ function App() {
                 <p>Cargando libros...</p>
               )}
             </div>
-            <button className="carousel-btn right" onClick={() => scrollCarousel(1)}>
-              &gt;
-            </button>
+            <button className="carousel-btn right" onClick={() => scrollCarousel(1)}>&gt;</button>
           </div>
         </section>
 
@@ -163,8 +175,8 @@ function App() {
           <h2>Acerca de Librova</h2>
           <p>
             Librova es una plataforma creada por y para estudiantes, donde puedes intercambiar libros usados de manera fácil, segura y gratuita.
-            Nuestra misión es fomentar la colaboración, el acceso a la lectura y el ahorro entre la comunidad estudiantil. ¡Únete, comparte tus libros
-            y encuentra nuevas lecturas para tu crecimiento académico y personal!
+            Nuestra misión es fomentar la colaboración, el acceso a la lectura y el ahorro entre la comunidad estudiantil.
+            ¡Únete, comparte tus libros y encuentra nuevas lecturas para tu crecimiento académico y personal!
           </p>
         </section>
       </main>
@@ -202,9 +214,9 @@ function App() {
 }
 
 function scrollCarousel(direction: number) {
-  const track = document.getElementById('carousel-track');
+  const track = document.getElementById("carousel-track");
   if (track) {
-    (track as HTMLElement).scrollBy({ left: direction * 220, behavior: 'smooth' });
+    (track as HTMLElement).scrollBy({ left: direction * 220, behavior: "smooth" });
   }
 }
 
