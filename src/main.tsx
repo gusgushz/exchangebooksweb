@@ -3,7 +3,6 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import './index.css';
-<<<<<<< HEAD
 import App from './App.tsx';
 import {
   ProfileScreen,
@@ -19,12 +18,6 @@ import {
 import { ProtectedRoute } from './navigation/ProtectedRoute.tsx';
 import { PublicRoute } from './navigation/PublicRoute.tsx';
 
-const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null;
-=======
-import App from './App';
-import { ProfileScreen, ErrorScreen, PublishBooks, LoginScreen, RegisterScreen, BookExchange, SearchScreen, UserBooksScreen } from './screens/';
-import { ProtectedRoute } from './navigation/ProtectedRoute.tsx';
-import { PublicRoute } from './navigation/PublicRoute.tsx';
 // localStorage.removeItem('user');
 // localStorage.removeItem('token');
 
@@ -47,7 +40,7 @@ const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('use
 //   lastname: 'demo2',
 //   email: 'otro',
 // };
->>>>>>> 6afac48fe3662063107c3b0cb92db44ca4de6274
+
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -122,10 +115,5 @@ createRoot(document.getElementById('root')!).render(
         <Route path="*" element={<ErrorScreen />} />
       </Routes>
     </BrowserRouter>
-<<<<<<< HEAD
   </StrictMode>
 );
-=======
-  </StrictMode>,
-);
->>>>>>> 6afac48fe3662063107c3b0cb92db44ca4de6274
