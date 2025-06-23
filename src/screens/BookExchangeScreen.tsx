@@ -1,8 +1,26 @@
-
 import React, { useState } from 'react';
+import { useLocation } from 'react-router';
 import './BookExchangeScreen.css';
 
 export const BookExchange: React.FC = () => {
+  const user = localStorage.getItem('user');
+  const userId = user ? JSON.parse(user).id : null;
+  const location = useLocation();
+  const libro = location.state;
+  const [librosUsuario, setLibrosUsuario] = useState([]);
+  const [libroSeleccionado, setLibroSeleccionado] = useState<string>('');
+
+  const obtenerLibrosUsuario = async () => {
+    if (!userId) return;
+    try {
+      const response = await fetch(`https://exchangebooks.up.railway.app/api/books/owner/${userId}`);
+      const data = await response.json();
+      setLibrosUsuario(data);
+    } catch (error) {
+      alert('No se pudieron obtener los libros del usuario.');
+    }
+  };
+
   const [lugar, setLugar] = useState('');
   const [fecha, setFecha] = useState('');
   const [hora, setHora] = useState('');
@@ -12,15 +30,39 @@ export const BookExchange: React.FC = () => {
     alert(`Intercambio agendado:\nLugar: ${lugar}\nFecha: ${fecha}\nHora: ${hora}`); //ddkdkd
   };
 
+  React.useEffect(() => {
+    obtenerLibrosUsuario();
+  }, []);
+
   return (
     <div className="user-books-bg">
       <div className="user-books-top">
         <div className="user-books-card">
-          
+          <h2>{libro.titulo}</h2>
+          <img src={libro.imagen} alt={libro.titulo} style={{ width: '150px', borderRadius: '8px' }} />
+          <p>Propietario: {libro.propietario}</p>
+          <p>Propietario: {libro.propietario}</p>
+          <p>Propietario: {libro.propietario}</p>
+
+
+
+
         </div>
-        <button className="user-books-select-btn">
-          Seleccionar
-        </button>
+        <div>
+          <select
+            id="libro-select"
+            className="user-books-select-btn"
+            value={libroSeleccionado}
+            onChange={e => setLibroSeleccionado(e.target.value)}
+          >
+            <option value="">Selecciona un libro</option>
+            {librosUsuario.map((libro: any) => (
+              <option key={libro.id} value={libro.title}>
+                {libro.title}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <form className="user-books-form" onSubmit={handleSubmit}>
@@ -50,4 +92,9 @@ export const BookExchange: React.FC = () => {
       </form>
     </div>
   );
+
+
+
+
+
 };

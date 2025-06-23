@@ -7,6 +7,10 @@ interface TarjetaBookProps {
   propietarioImagen: string; // Opcional si quieres mostrar una imagen del propietario
   titulo: string;
   imagen: string;
+  id: string;
+  author: string;
+  description: string;
+  publication_year: string;
   onIntercambiar: () => void;
   onVerMas: () => void;
 }
@@ -16,6 +20,10 @@ const TarjetaBook: React.FC<TarjetaBookProps> = ({
   propietarioImagen,
   titulo,
   imagen,
+  id,
+  author,
+  description,
+  publication_year,
   onVerMas,
 }) => {
 
@@ -37,7 +45,23 @@ const TarjetaBook: React.FC<TarjetaBookProps> = ({
         Intercambiar
       </button> */}
 
-      <button className="tarjeta-book-btn" onClick={() => navigate('/intercambio')}>Intercambiar</button>
+      <button
+        className="tarjeta-book-btn"
+        onClick={() =>
+          navigate('/intercambio', {
+            state: {
+              libroId: id,
+              titulo,
+              imagen,
+              author,
+              description,
+              publication_year,
+            },
+          })
+        }
+      >
+        Intercambiar
+      </button>
       <button className="tarjeta-book-link" onClick={onVerMas}>
         Ver mas
       </button>

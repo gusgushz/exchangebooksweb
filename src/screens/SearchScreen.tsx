@@ -4,11 +4,15 @@ import TarjetaBook from '../components/TarjetaBook';
 import { NavBar } from '../components/navBar';
 
 interface Libro {
+  id: string;
   owner_profile_image: string;
   owner_name: string;
   owner_lastname: string;
   title: string;
   image_url: string;
+  author: string;
+  description: string;
+  publication_year: string;
 }
 
 export const SearchScreen = () => {
@@ -75,10 +79,14 @@ export const SearchScreen = () => {
       <div className="libros-grid">
         {libros.map((libro) => (
           <TarjetaBook
+            id={libro.id}
             propietario={`${libro.owner_name} ${libro.owner_lastname}`}
             propietarioImagen={libro.owner_profile_image}
             titulo={libro.title}
             imagen={libro.image_url}
+            author={libro.author}
+            description={libro.description}
+            publication_year={libro.publication_year}
             onIntercambiar={() => alert(`Intercambiar ${libro.title}`)}
             onVerMas={() => alert(`Ver más sobre ${libro.title}`)}
           />

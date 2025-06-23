@@ -40,8 +40,8 @@
 }
 
 .user-books-select-btn {
-  background: #a67c52;
-  color: #fff;
+  background: #A67C52;
+  color: #ffffff;
   font-size: 1rem;
   border: none;
   border-radius: 8px;
@@ -54,7 +54,8 @@
 }
 
 .user-books-select-btn:hover {
-  background: #8b5c2a;
+  background: #D4C8AA;
+  color: #4A3F35;
 }
 
 .user-books-form {
