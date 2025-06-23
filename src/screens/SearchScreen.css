@@ -2,50 +2,27 @@
   min-height: 100vh;
   width: 100vw;
   background: #f5f1e6;
-  padding: 40px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
 }
 
-/* Barra de búsqueda */
-.search-bar-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 32px;
-}
-
-.search-bar {
-  width: 400px;
-  max-width: 90vw;
-  padding: 14px 48px 14px 18px;
-  border-radius: 14px;
-  border: none;
-  font-size: 1.2rem;
-  background: #f8f3e7;
-  box-shadow: 2px 2px 8px rgba(0,0,0,0.10);
+.welcome-message-search {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 20px 0;
+  text-align: center;
   color: #4A3F35;
-  outline: none;
 }
 
-.search-icon {
-  position: relative;
-  left: -38px;
-  top: 2px;
-  font-size: 1.4rem;
-  color: #4A3F35;
-  pointer-events: none;
-}
-
-/* Grid de tarjetas */
-.tarjetas-grid {
+.libros-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 40px;
   width: 90%;
   max-width: 1200px;
   margin: 0 auto;
+  padding-bottom: 40px;
   justify-items: center;
 }
