@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaUser, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import type { FormEvent } from 'react';
-import logo from '../assets/logo2.png';
+import logo from '../assets/Logo.png';
 import './LoginScreen.css';
 import { PostLogin } from '../api/PostLogin';
 import { useNavigate } from 'react-router';

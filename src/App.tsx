@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import logo from './assets/logo.jpg';
+import logo from './assets/Logo.png';
 import portada from './assets/portada.jpg';
 import Libro from './assets/libro.png';
 import conexion from './assets/conexion.png';
 import estrella from './assets/estrella.png';
-import Perfil from './assets/Perfil.png';
-import { GetAvailableBooks } from './api';
+import { GetAvailableBooks, SearchBooks } from './api';
 import { NavBar } from './components/navBar';
 // import { ProfileScreen } from "./screens";
 // import { useNavigate } from 'react-router';
@@ -28,14 +27,7 @@ function App() {
     async function fetchBooks() {
       try {
         const res = await GetAvailableBooks();
-        console.log('Libros disponibles:', res);
-
-        const booksData: Book[] = res.map((book: any) => ({
-          id: book.id,
-          title: book.title,
-          imageUrl: book.image_url, // Usa una imagen por defecto si no hay
-        }));
-        setAvailableBooks(booksData); // Asegúrate que el formato coincida
+        setAvailableBooks(res);
       } catch (err) {
         console.error(err);
       }
@@ -58,10 +50,8 @@ function App() {
               const keyword = input?.value.trim();
               if (!keyword) return;
               try {
-                const res = await fetch(`/api/books/available/search?search=${encodeURIComponent(keyword)}`);
-                if (!res.ok) throw new Error('Error al buscar libros');
-                const data = await res.json();
-                setAvailableBooks(data); // Actualiza el carrusel con los resultados
+                const data = await SearchBooks(keyword);
+                setAvailableBooks(data);
               } catch (err) {
                 console.error(err);
                 alert('No se pudieron buscar libros.');
