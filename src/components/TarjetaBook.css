@@ -58,3 +58,31 @@
 .tarjeta-book-link:hover {
   text-decoration: underline #a67c52;
 }
+
+.propietario-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.propietario-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid #a67c52;
+}
+
+.propietario-nombre {
+  color: #4A3F35;
+  font-weight: 600;
+  font-size: 1rem;
+  font-family: 'Montserrat', Arial, sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -33,6 +33,7 @@ export const LoginScreen = () => {
       setErrorMsg('');
       navigate('/', { replace: true }); // Redirige al inicio o a la página que desees después del login
       // Aquí puedes guardar token o info si la API lo devuelve
+      window.location.reload();
     } catch (error: any) {
       console.error('Error en login:', error);
       if (error.response?.data?.message) {
