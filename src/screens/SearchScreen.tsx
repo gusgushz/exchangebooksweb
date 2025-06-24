@@ -4,7 +4,7 @@ import TarjetaBook from '../components/TarjetaBook';
 import { NavBar } from '../components/navBar';
 import './SearchScreen.css';
 import axios from 'axios'; // Agregado para usar axios
-import '../screens/SearchScreen.css'; // Asegúrate de tener este archivo CSS
+// import '../screens/SearchScreen.css'; // Asegúrate de tener este archivo CSS
 
 interface Libro {
   id: string;
@@ -18,10 +18,16 @@ interface Libro {
   owner_lastname: string;
   owner_profile_image: string;
 }
+interface User {
+  id: string;
+  name: string;
+  lastname: string;
+  image_url: string;
+}
 
 export const SearchScreen = () => {
   const [libros, setLibros] = useState<Libro[]>([]);
-  const [userName, setUserName] = useState<string>('Usuario');
+  const [user, setUser] = useState<User | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const librosPorPagina = 10;
   const navigate = useNavigate();
@@ -31,19 +37,36 @@ export const SearchScreen = () => {
     console.log('User from localStorage:', user);
     if (user) {
       try {
-        const userObj = JSON.parse(user);
-        const fullName = [userObj.name, userObj.lastname].filter(Boolean).join(' ');
-        setUserName(fullName || 'Usuario');
+        const userObj: User = JSON.parse(user);
+        // const fullName = [userObj.name, userObj.lastname].filter(Boolean).join(' ');
+        setUser(userObj);
       } catch {
-        setUserName('Usuario');
+        // setUser('Usuario');
       }
     }
   }, []);
 
   const fetchLibros = async () => {
     try {
+      if (!user) return;
       const response = await axios.get('https://exchangebooks.up.railway.app/api/books/available');
-      setLibros(response.data);
+      console.log('Libros obtenidos:', response.data);
+
+      const librosData = response.data
+        .filter((libro: any) => libro.owner_id !== user.id)
+        .map((libro: any) => ({
+          id: libro.id,
+          title: libro.title,
+          image_url: libro.image_url,
+          author: libro.author,
+          description: libro.description,
+          publication_year: libro.publication_year,
+          owner_id: libro.owner_id,
+          owner_name: libro.owner_name,
+          owner_lastname: libro.owner_lastname,
+          owner_profile_image: libro.owner_profile_image,
+        }));
+      setLibros(librosData);
     } catch (error) {
       console.error('Error al obtener los libros:', error);
     }
@@ -59,19 +82,30 @@ export const SearchScreen = () => {
         fetchLibros(); // Mostrar todos si no hay búsqueda
         return;
       }
-
-      const response = await axios.get(`https://exchangebooks.up.railway.app/api/books/available/search`, {
-        params: { keyword }
-      });
-      setLibros(response.data);
+      const res = await fetch(`https://exchangebooks.up.railway.app/api/books/available/search?search=${encodeURIComponent(keyword)}`);
+      const data = await res.json();
+      console.log('Libros encontrados:', data);
+      const librosEncontrados = data.map((libro: any) => ({
+        id: libro.book.id,
+        title: libro.book.title,
+        image_url: libro.book.image_url,
+        author: libro.book.author,
+        description: libro.book.description,
+        publication_year: libro.book.publication_year,
+        owner_id: libro.owner.id,
+        owner_name: libro.owner.name,
+        owner_lastname: libro.owner.lastname,
+        owner_profile_image: libro.owner.image_url,
+      }));
+      setLibros(librosEncontrados || []);
     } catch (error) {
       console.error('Error en búsqueda:', error);
     }
   };
-  const handleSearch = (keyword: string) => {
-    // Aquí puedes hacer la búsqueda de libros
-    // Por ejemplo: llamar a tu función SearchBooks y actualizar el estado
-  };
+  // const handleSearch = (keyword: string) => {
+  //   // Aquí puedes hacer la búsqueda de libros
+  //   // Por ejemplo: llamar a tu función SearchBooks y actualizar el estado
+  // };
 
   // Paginación
   const indexOfLastLibro = currentPage * librosPorPagina;
@@ -81,20 +115,12 @@ export const SearchScreen = () => {
 
   return (
     <div className="search-bg">
-      <NavBar
-        showSearch={true}
-        showProfile={true}
-        showAbout={false}
-        userName={userName}
-        onSearch={handleSearch}
-      />
+      <NavBar showSearch={true} showProfile={true} showAbout={false} userName={user?.name} onSearch={handleSearch} />
 
-      <div className="welcome-message-search">
-        ¡Bienvenido, {userName}!
-      </div>
+      <div className="welcome-message-search">¡Bienvenido, {user?.name}!</div>
 
       <div className="libros-grid">
-        {libros.map((libro) => (
+        {libros.map(libro => (
           <TarjetaBook
             key={libro.id}
             id={libro.id}
@@ -110,12 +136,22 @@ export const SearchScreen = () => {
             onVerMas={() => alert(`Ver más sobre ${libro.title}`)}
           />
         ))}
-      <div className="search-main-container">
-        <div className="welcome-message-search">
-          ¡Bienvenido, {userName}!
-        </div>
+      </div>
+      <div className="pagination">
+        <button onClick={() => setCurrentPage(prev => prev - 1)} disabled={currentPage === 1}>
+          Anterior
+        </button>
+        <span>
+          Página {currentPage} de {totalPaginas}
+        </span>
+        <button onClick={() => setCurrentPage(prev => prev + 1)} disabled={currentPage === totalPaginas}>
+          Siguiente
+        </button>
+      </div>
+      {/* <div className="search-main-container">
+        <div className="welcome-message-search">¡Bienvenido, {userName}!</div>
         <div className="libros-grid">
-          {librosActuales.map((libro) => (
+          {librosActuales.map(libro => (
             <TarjetaBook
               key={libro.id}
               titulo={libro.title}
@@ -128,22 +164,7 @@ export const SearchScreen = () => {
             </TarjetaBook>
           ))}
         </div>
-        <div className="pagination">
-          <button
-            onClick={() => setCurrentPage((prev) => prev - 1)}
-            disabled={currentPage === 1}
-          >
-            Anterior
-          </button>
-          <span>Página {currentPage} de {totalPaginas}</span>
-          <button
-            onClick={() => setCurrentPage((prev) => prev + 1)}
-            disabled={currentPage === totalPaginas}
-          >
-            Siguiente
-          </button>
-        </div>
-      </div>
+      </div> */}
     </div>
   );
 };

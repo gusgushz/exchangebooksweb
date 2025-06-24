@@ -4,14 +4,6 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import './index.css';
 import App from './App';
-import { ProfileScreen, ErrorScreen, PublishBooks, LoginScreen, RegisterScreen, BookExchange, SearchScreen, UserBooksScreen } from './screens/';
-import { ProtectedRoute } from './navigation/ProtectedRoute.tsx';
-import { PublicRoute } from './navigation/PublicRoute.tsx';
-import { PasswordRecoveryScreen } from './screens/PasswordRecoveryScreen.tsx';
-// localStorage.removeItem('user');
-// localStorage.removeItem('token');
-
-import App from './App.tsx';
 import {
   ProfileScreen,
   ErrorScreen,
@@ -21,10 +13,28 @@ import {
   BookExchange,
   SearchScreen,
   UserBooksScreen,
-  PasswordRecoveryScreen
+  PasswordRecoveryScreen,
 } from './screens/';
 import { ProtectedRoute } from './navigation/ProtectedRoute.tsx';
 import { PublicRoute } from './navigation/PublicRoute.tsx';
+
+// localStorage.removeItem('user');
+// localStorage.removeItem('token');
+
+// import App from './App.tsx';
+// import {
+//   ProfileScreen,
+//   ErrorScreen,
+//   PublishBooks,
+//   LoginScreen,
+//   RegisterScreen,
+//   BookExchange,
+//   SearchScreen,
+//   UserBooksScreen,
+
+// } from './screens/';
+// import { ProtectedRoute } from './navigation/ProtectedRoute.tsx';
+// import { PublicRoute } from './navigation/PublicRoute.tsx';
 const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null;
 
 //FIXME: crear contexto o localstarge para guardar sesión del usuario
@@ -44,7 +54,6 @@ const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('use
 //   lastname: 'demo2',
 //   email: 'otro',
 // };
-
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -74,9 +83,10 @@ createRoot(document.getElementById('root')!).render(
         />
         <Route
           path="/recuperar"
-          element={ // 👈 NUEVA RUTA
+          element={
+            // 👈 NUEVA RUTA
             <PublicRoute user={user}>
-              <PasswordRecoveryScreen/>
+              <PasswordRecoveryScreen />
             </PublicRoute>
           }
         />
@@ -119,10 +129,5 @@ createRoot(document.getElementById('root')!).render(
         <Route path="*" element={<ErrorScreen />} />
       </Routes>
     </BrowserRouter>
-
   </StrictMode>,
 );
-
-  </StrictMode>
-);
-

@@ -4,17 +4,17 @@ import { useState } from 'react';
 import './TarjetaBook.css';
 
 interface TarjetaBookProps {
-  id: string;
-  titulo: string;
-  imagen: string;
-  autor: string;
-  descripcion: string;
-  publicacionAño: string;
-  idPropietario: string;
-  propietario: React.ReactNode;
-  propietarioImagen: string;
-  onIntercambiar: () => void;
-  onVerMas: () => void;
+  id?: string;
+  titulo?: string;
+  imagen?: string;
+  autor?: string;
+  descripcion?: string;
+  publicacionAño?: string;
+  idPropietario?: string;
+  propietario?: React.ReactNode;
+  propietarioImagen?: string;
+  onIntercambiar?: () => void;
+  onVerMas?: () => void;
 }
 
 const TarjetaBook: React.FC<TarjetaBookProps> = ({

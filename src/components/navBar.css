@@ -61,8 +61,8 @@ body {
   border: none;
   font-size: 1.2rem;
   background: #f8f3e7;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.10);
-  color: #4A3F35;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  color: #4a3f35;
   outline: none;
 }
 
@@ -73,9 +73,11 @@ body {
   transform: translateY(-50%);
   font-size: 1.4rem;
   pointer-events: none;
-  color: #4A3F35;
+  color: #4a3f35;
 }
-
+.search-icon button {
+  cursor: pointer;
+}
 /* Navegación y perfil */
 .nav-links {
   display: flex;

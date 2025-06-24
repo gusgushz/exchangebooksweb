@@ -1,12 +1,8 @@
 import logo from '../assets/Logo.png';
 import Perfil from '../assets/Perfil.png';
 import { useNavigate } from 'react-router';
-
 import { useState, useEffect } from 'react';
-
-
 import './navBar.css';
-
 
 interface NavBarProps {
   showSearch?: boolean;
@@ -16,15 +12,10 @@ interface NavBarProps {
   userName?: string;
 }
 
-export const NavBar = ({
-  showSearch = false,
-  onSearch,
-  showProfile = true,
-  showAbout = true
-}: NavBarProps) => {
+export const NavBar = ({ showSearch = false, onSearch, showProfile = true, showAbout = true }: NavBarProps) => {
   const navigate = useNavigate();
 
-  //const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<any>(null);
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -57,7 +48,7 @@ export const NavBar = ({
     };
 
     window.addEventListener('focus', handleFocus);
-    
+
     return () => {
       window.removeEventListener('focus', handleFocus);
     };
@@ -74,11 +65,11 @@ export const NavBar = ({
     try {
       const userData = localStorage.getItem('user');
       if (userData) {
-        console.log("Tenemos usuario: ", userData);
+        console.log('Tenemos usuario: ', userData);
         // Tenemos usuario en localStorage
         setMenuOpen(open => !open);
       } else {
-        console.log("No tenemos usuario: ", userData);
+        console.log('No tenemos usuario: ', userData);
         // No hay usuario, redirigir al login
         navigate('/login');
       }
@@ -104,12 +95,14 @@ export const NavBar = ({
           <div className="logo" style={{ cursor: 'pointer' }} onClick={() => navigate('/')}>
             <img src={logo} alt="Librova" />
           </div>
-          <button className="back-btn" onClick={() => navigate(-1)} style={{ marginLeft: 16 }}>
+          {/* <button className="back-btn" onClick={() => navigate(-1)} style={{ marginLeft: 16 }}>
             ← Volver
-          </button>
+          </button> */}
           {showSearch && (
             <form className="search-bar" onSubmit={handleSubmit}>
-              <span className="search-icon">🔍</span>
+              <button type="submit" className="search-icon">
+                🔍
+              </button>
               <input type="text" name="search" placeholder="Buscar libros..." />
             </form>
           )}
@@ -118,12 +111,16 @@ export const NavBar = ({
               <div className="profile-dropdown">
                 <span className="profile-icon" onClick={handleProfileClick} style={{ cursor: 'pointer' }} title="Opciones de perfil">
                   <img src={Perfil} alt="Perfil" />
-                </span>                {menuOpen && (
-                  <ul className="profile-menu">                    
-                  <li onClick={() => {
-                      console.log("Navegando a la pantalla de búsqueda...");
-                      navigate('/perfil');
-                    }}>Mi perfil</li>
+                </span>{' '}
+                {menuOpen && (
+                  <ul className="profile-menu">
+                    <li
+                      onClick={() => {
+                        console.log('Navegando a la pantalla de búsqueda...');
+                        navigate('/perfil');
+                      }}>
+                      Mi perfil
+                    </li>
                     <li onClick={() => navigate('/history')}>Historial de intercambios</li>
                     <li onClick={handleLogout}>Cerrar sesión</li>
                   </ul>
@@ -151,13 +148,10 @@ export const NavBar = ({
         {showSearch && (
           <div className="nav-center">
             <form className="search-bar-wrapper" onSubmit={handleSubmit}>
-              <input
-                type="text"
-                name="search"
-                className="search-bar"
-                placeholder="Buscar libros..."
-              />
-              <span className="search-icon">🔍</span>
+              <input type="text" name="search" className="search-bar" placeholder="Buscar libros..." />
+              <button type="submit" className="search-icon">
+                🔍
+              </button>
             </form>
           </div>
         )}
@@ -165,12 +159,7 @@ export const NavBar = ({
           <a href="/">Inicio</a>
           {showAbout && <a href="/#acerca-de">Acerca de</a>}
         </nav>
-        <span
-          className="profile-icon"
-          onClick={handleProfileClick}
-          style={{ cursor: 'pointer', marginLeft: 16 }}
-          title="Iniciar sesión"
-        >
+        <span className="profile-icon" onClick={handleProfileClick} style={{ cursor: 'pointer', marginLeft: 16 }} title="Iniciar sesión">
           <img src={Perfil} alt="Perfil" />
         </span>
       </div>

@@ -1,4 +1,5 @@
-body, html {
+body,
+html {
   background: #f5f1e6;
   margin: 0;
   padding: 0;
@@ -19,7 +20,7 @@ body, html {
   font-weight: bold;
   margin: 20px 0;
   text-align: center;
-  color: #4A3F35;
+  color: #4a3f35;
 }
 
 .libros-grid {
@@ -69,7 +70,7 @@ body, html {
   justify-content: center;
   align-items: center;
   gap: 16px;
-  margin-bottom: 0;
+  margin-bottom: 40px;
 }
 
 .pagination button {
